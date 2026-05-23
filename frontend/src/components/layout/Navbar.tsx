@@ -26,9 +26,11 @@ import {
 import { useCartStore } from '@/store/cartStore';
 import { useAuthStore } from '@/store/authStore';
 import { signOut } from '@/lib/services/authService';
+import { getProducts } from '@/lib/services/productService';
 import { NotificationBell } from '@/components/layout/NotificationBell';
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
+import type { Product } from '@/types';
 
 const TRENDING_SEARCHES = [
   'Sneakers',
@@ -68,19 +70,39 @@ function saveRecentSearch(query: string) {
 interface SearchDropdownProps {
   query: string;
   onSelect: (q: string) => void;
+  onSelectProduct: (slug: string) => void;
   isMobile?: boolean;
 }
 
-function SearchDropdown({ query, onSelect, isMobile = false }: SearchDropdownProps) {
+function SearchDropdown({ query, onSelect, onSelectProduct, isMobile = false }: SearchDropdownProps) {
   const [recent, setRecent] = useState<string[]>(() => getRecentSearches());
+  const [productResults, setProductResults] = useState<Product[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(false);
 
-  const suggestions = query.length > 1
-    ? TRENDING_SEARCHES.filter(t => t.toLowerCase().includes(query.toLowerCase()))
-    : [];
+  // Debounced product fetch
+  useEffect(() => {
+    if (query.length < 2) {
+      setProductResults([]);
+      return;
+    }
+    setLoadingProducts(true);
+    const timer = setTimeout(async () => {
+      try {
+        const { products } = await getProducts({ q: query, pageSize: 5 });
+        setProductResults(products);
+      } catch {
+        setProductResults([]);
+      } finally {
+        setLoadingProducts(false);
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [query]);
 
   const showTrending = query.length === 0;
   const showRecent = query.length === 0 && recent.length > 0;
-  const hasSomething = suggestions.length > 0 || showTrending || showRecent;
+  const showProducts = query.length >= 2;
+  const hasSomething = showProducts || showTrending || showRecent;
 
   if (!hasSomething) return null;
 
@@ -90,38 +112,67 @@ function SearchDropdown({ query, onSelect, isMobile = false }: SearchDropdownPro
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 8, scale: 0.98 }}
       transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-      className={`absolute top-full left-0 right-0 mt-3 bg-white border-2 border-neutral-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-hidden z-50 rounded-none`}
+      className="absolute top-full left-0 right-0 mt-3 bg-white border-2 border-neutral-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-hidden z-50 rounded-none max-h-[70vh] overflow-y-auto"
     >
-      {suggestions.length > 0 && (
+      {/* Live Product Results */}
+      {showProducts && (
         <div className="p-2 sm:p-3">
           <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider px-2 mb-2">
-            Suggestions
+            Products
           </p>
-          {suggestions.map((s) => (
-            <button
-              key={s}
-              onMouseDown={() => onSelect(s)}
-              className="w-full flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm text-neutral-700 hover:bg-neutral-100 rounded-none transition-colors text-left group border-l-2 border-transparent hover:border-neutral-900"
-            >
-              <Search size={14} className="text-neutral-400 group-hover:text-neutral-600 transition-colors flex-shrink-0" />
-              <span className="truncate">
-                {s.toLowerCase().indexOf(query.toLowerCase()) !== -1 ? (
-                  <>
-                    {s.slice(0, s.toLowerCase().indexOf(query.toLowerCase()))}
-                    <strong className="text-neutral-900 font-semibold">
-                      {s.slice(s.toLowerCase().indexOf(query.toLowerCase()), s.toLowerCase().indexOf(query.toLowerCase()) + query.length)}
-                    </strong>
-                    {s.slice(s.toLowerCase().indexOf(query.toLowerCase()) + query.length)}
-                  </>
-                ) : s}
-              </span>
-            </button>
-          ))}
+          {loadingProducts ? (
+            <div className="space-y-2 px-2 py-1">
+              {[1, 2, 3].map(i => (
+                <div key={i} className="flex items-center gap-3 animate-pulse">
+                  <div className="w-10 h-10 bg-neutral-100 flex-shrink-0" />
+                  <div className="flex-1 space-y-1.5">
+                    <div className="h-3 bg-neutral-100 rounded w-2/3" />
+                    <div className="h-3 bg-neutral-100 rounded w-1/4" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : productResults.length > 0 ? (
+            <div className="space-y-0.5">
+              {productResults.map((product) => (
+                <button
+                  key={product.id}
+                  onMouseDown={() => onSelectProduct(product.slug)}
+                  className="w-full flex items-center gap-3 px-2 py-2 hover:bg-neutral-50 transition-colors text-left group border-l-2 border-transparent hover:border-neutral-900"
+                >
+                  <div className="w-10 h-10 flex-shrink-0 bg-neutral-100 overflow-hidden border border-neutral-200">
+                    {product.images?.[0] ? (
+                      <img
+                        src={product.images[0]}
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Search size={14} className="text-neutral-300" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-neutral-900 truncate group-hover:text-neutral-700">
+                      {product.name}
+                    </p>
+                    <p className="text-[11px] text-neutral-500 font-semibold mt-0.5">
+                      PKR {product.price.toLocaleString()}
+                    </p>
+                  </div>
+                  <ArrowRight size={14} className="text-neutral-300 group-hover:text-neutral-600 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-all" />
+                </button>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-neutral-400 px-2 py-2">No products found for "{query}"</p>
+          )}
         </div>
       )}
 
       {showRecent && (
-        <div className="p-2 sm:p-3 border-t border-neutral-100">
+        <div className={`p-2 sm:p-3 ${showProducts ? 'border-t border-neutral-100' : ''}`}>
           <div className="flex items-center justify-between px-2 mb-2">
             <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">Recent</p>
             <button
@@ -145,7 +196,7 @@ function SearchDropdown({ query, onSelect, isMobile = false }: SearchDropdownPro
       )}
 
       {showTrending && (
-        <div className="p-2 sm:p-3 border-t border-neutral-100">
+        <div className={`p-2 sm:p-3 ${showRecent ? 'border-t border-neutral-100' : ''}`}>
           <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider px-2 mb-2 sm:mb-3">
             Trending Now
           </p>
@@ -169,7 +220,7 @@ function SearchDropdown({ query, onSelect, isMobile = false }: SearchDropdownPro
           onMouseDown={() => onSelect(query || '')}
           className="w-full flex items-center justify-between text-xs sm:text-sm text-neutral-500 hover:text-neutral-900 transition-colors py-2 px-2 rounded-none hover:bg-neutral-100"
         >
-          <span className="truncate">{query ? `Search for "${query}"` : 'Browse all products'}</span>
+          <span className="truncate">{query ? `See all results for "${query}"` : 'Browse all products'}</span>
           <ArrowRight size={14} className="sm:w-4 sm:h-4 flex-shrink-0" />
         </button>
       </div>
@@ -237,6 +288,14 @@ export function Navbar() {
       saveRecentSearch(trimmed);
       router.push(`/products?q=${encodeURIComponent(trimmed)}`);
     }
+    setSearchQuery('');
+    setSearchFocused(false);
+    setMobileSearchOpen(false);
+    setMobileMenuOpen(false);
+  }, [router]);
+
+  const doSelectProduct = useCallback((slug: string) => {
+    router.push(`/products/${slug}`);
     setSearchQuery('');
     setSearchFocused(false);
     setMobileSearchOpen(false);
@@ -338,7 +397,7 @@ export function Navbar() {
               </form>
               <AnimatePresence>
                 {searchFocused && (
-                  <SearchDropdown query={searchQuery} onSelect={doSearch} />
+                  <SearchDropdown query={searchQuery} onSelect={doSearch} onSelectProduct={doSelectProduct} />
                 )}
               </AnimatePresence>
             </div>
@@ -543,7 +602,7 @@ export function Navbar() {
                 </form>
                 <AnimatePresence>
                   {searchFocused && (
-                    <SearchDropdown query={searchQuery} onSelect={doSearch} isMobile />
+                    <SearchDropdown query={searchQuery} onSelect={doSearch} onSelectProduct={doSelectProduct} isMobile />
                   )}
                 </AnimatePresence>
               </div>

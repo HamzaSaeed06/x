@@ -63,13 +63,18 @@ export function HeroBannerCarousel({ banners }: HeroBannerCarouselProps) {
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
   }, [slides.length]);
 
+  // Reset current index when slides array changes to avoid out-of-bounds
+  useEffect(() => {
+    if (current >= slides.length) setCurrent(0);
+  }, [slides.length, current]);
+
   useEffect(() => {
     if (!isAutoPlaying || slides.length <= 1) return;
     const t = setInterval(next, 6000);
     return () => clearInterval(t);
   }, [isAutoPlaying, slides.length, next]);
 
-  const slide = slides[current];
+  const slide = slides[current] ?? slides[0] ?? DEFAULT_SLIDES[0];
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -124,7 +129,7 @@ export function HeroBannerCarousel({ banners }: HeroBannerCarouselProps) {
 
       {/* Content */}
       <div className="relative z-20 h-full flex items-center">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 w-full">
+        <div className="max-w-7xl mx-auto pl-6 sm:pl-24 lg:pl-28 pr-6 sm:pr-20 lg:pr-24 w-full">
           <div className="max-w-xs xs:max-w-sm sm:max-w-xl">
             <AnimatePresence mode="wait">
               <motion.div
@@ -182,22 +187,22 @@ export function HeroBannerCarousel({ banners }: HeroBannerCarouselProps) {
         </div>
       </div>
 
-      {/* Navigation Arrows */}
+      {/* Navigation Arrows — hidden on small screens to avoid overlapping text */}
       {slides.length > 1 && (
         <>
           <button
             onClick={prev}
-            className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 sm:w-14 sm:h-14 bg-white/10 backdrop-blur-md text-white border border-white/20 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 group"
+            className="hidden sm:flex absolute left-4 lg:left-8 bottom-16 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-md text-white border border-white/20 hover:bg-white/20 rounded-full items-center justify-center transition-all duration-300 group"
             aria-label="Previous slide"
           >
-            <ChevronLeft size={24} className="group-hover:-translate-x-0.5 transition-transform" />
+            <ChevronLeft size={20} className="group-hover:-translate-x-0.5 transition-transform" />
           </button>
           <button
             onClick={next}
-            className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 sm:w-14 sm:h-14 bg-white/10 backdrop-blur-md text-white border border-white/20 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 group"
+            className="hidden sm:flex absolute right-4 lg:right-8 bottom-16 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-md text-white border border-white/20 hover:bg-white/20 rounded-full items-center justify-center transition-all duration-300 group"
             aria-label="Next slide"
           >
-            <ChevronRight size={24} className="group-hover:translate-x-0.5 transition-transform" />
+            <ChevronRight size={20} className="group-hover:translate-x-0.5 transition-transform" />
           </button>
         </>
       )}
