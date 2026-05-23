@@ -29,7 +29,7 @@ export default defineConfig({
     allowedHosts: true,
     proxy: {
       "/api": {
-        target: "http://localhost:5001",
+        target: "http://localhost:8000",
         changeOrigin: true,
       },
     },
