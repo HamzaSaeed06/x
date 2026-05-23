@@ -91,7 +91,7 @@ export function HeroBannerCarousel({ banners }: HeroBannerCarouselProps) {
 
   return (
     <section 
-      className="relative h-[500px] sm:h-[600px] lg:h-[700px] overflow-hidden bg-neutral-950"
+      className="relative min-h-[420px] h-[52vh] sm:h-[580px] lg:h-[680px] xl:h-[720px] overflow-hidden bg-neutral-950"
       onMouseEnter={() => setIsAutoPlaying(false)}
       onMouseLeave={() => setIsAutoPlaying(true)}
     >
@@ -124,8 +124,8 @@ export function HeroBannerCarousel({ banners }: HeroBannerCarouselProps) {
 
       {/* Content */}
       <div className="relative z-20 h-full flex items-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="max-w-xl">
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 w-full">
+          <div className="max-w-xs xs:max-w-sm sm:max-w-xl">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`content-${current}`}
@@ -139,37 +139,37 @@ export function HeroBannerCarousel({ banners }: HeroBannerCarouselProps) {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2 }}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-md text-white text-[11px] font-semibold tracking-wider uppercase rounded-full border border-white/20 mb-6"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-md text-white text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase rounded-full border border-white/20 mb-4 sm:mb-6"
                 >
                   <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
                   New Collection
                 </motion.span>
 
                 {/* Title */}
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white tracking-tight leading-[1.1] mb-6">
+                <h1 className="text-3xl xs:text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white tracking-tight leading-[1.05] mb-3 sm:mb-6">
                   {slide.title}
                 </h1>
 
                 {/* Subtitle */}
-                <p className="text-base sm:text-lg text-white/80 leading-relaxed mb-8 max-w-md">
+                <p className="text-sm sm:text-base lg:text-lg text-white/80 leading-relaxed mb-5 sm:mb-8 max-w-xs sm:max-w-md">
                   {slide.subtitle}
                 </p>
 
                 {/* CTAs */}
-                <div className="flex flex-wrap items-center gap-4">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4">
                   <Button
                     asChild
-                    className="h-12 sm:h-14 px-8 sm:px-10 bg-white text-neutral-900 hover:bg-neutral-100 text-sm sm:text-base font-bold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group"
+                    className="h-10 sm:h-12 lg:h-14 px-6 sm:px-8 lg:px-10 bg-white text-neutral-900 hover:bg-neutral-100 text-xs sm:text-sm lg:text-base font-bold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group"
                   >
                     <Link href={slide.ctaLink}>
                       {slide.ctaText}
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </Button>
                   <Button
                     asChild
                     variant="ghost"
-                    className="h-12 sm:h-14 px-6 text-white border-2 border-white/30 hover:bg-white/10 hover:border-white/50 text-sm sm:text-base font-semibold rounded-full transition-all duration-300"
+                    className="h-10 sm:h-12 lg:h-14 px-4 sm:px-6 text-white border-2 border-white/30 hover:bg-white/10 hover:border-white/60 text-xs sm:text-sm lg:text-base font-semibold rounded-full transition-all duration-300"
                   >
                     <Link href="/products">
                       Explore All

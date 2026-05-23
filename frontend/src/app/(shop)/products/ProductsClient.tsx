@@ -65,28 +65,31 @@ export function ProductsClient({
   return (
     <div className="min-h-screen bg-white">
       {/* Page Header */}
-      <div className="bg-neutral-50 border-b border-neutral-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-16">
+      <div className="bg-neutral-50 border-b-2 border-neutral-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-14">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-950 tracking-tight mb-2 sm:mb-3">
-              {initialCategory
-                ? CATEGORIES.find(c => c.value === initialCategory)?.label || initialCategory.charAt(0).toUpperCase() + initialCategory.slice(1)
-                : 'All Products'}
-            </h1>
+            <div className="flex items-start gap-3 sm:gap-4 mb-2 sm:mb-3">
+              <div className="w-1 sm:w-1.5 bg-neutral-900 self-stretch rounded-none flex-shrink-0" />
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-neutral-950 tracking-tight">
+                {initialCategory
+                  ? CATEGORIES.find(c => c.value === initialCategory)?.label || initialCategory.charAt(0).toUpperCase() + initialCategory.slice(1)
+                  : 'All Products'}
+              </h1>
+            </div>
             {query && (
-              <p className="text-neutral-600 text-base sm:text-lg">
-                Showing results for{' '}
-                <span className="font-semibold text-neutral-950">&ldquo;{query}&rdquo;</span>
-                {' '}&mdash; <span className="font-medium">{products.length} {products.length === 1 ? 'product' : 'products'}</span> found
+              <p className="text-neutral-600 text-sm sm:text-base ml-4 sm:ml-5">
+                Results for{' '}
+                <span className="font-bold text-neutral-950">&ldquo;{query}&rdquo;</span>
+                {' '}&mdash; <span className="font-semibold">{products.length} {products.length === 1 ? 'product' : 'products'}</span> found
               </p>
             )}
             {!query && (
-              <p className="text-neutral-600 text-base sm:text-lg">
-                <span className="font-medium">{products.length}</span> {products.length === 1 ? 'product' : 'products'} available
+              <p className="text-neutral-500 text-sm sm:text-base ml-4 sm:ml-5">
+                <span className="font-semibold text-neutral-700">{products.length}</span> {products.length === 1 ? 'product' : 'products'} available
               </p>
             )}
           </motion.div>
@@ -104,10 +107,10 @@ export function ProductsClient({
                 <button
                   key={cat.value}
                   onClick={() => updateFilter('category', cat.value)}
-                  className={`px-4 py-2 text-sm font-semibold rounded-full transition-all duration-250 whitespace-nowrap ${
+                  className={`px-4 py-2 text-sm font-bold border-2 border-neutral-900 transition-all duration-200 whitespace-nowrap rounded-none shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer ${
                     isActive
-                      ? 'bg-neutral-950 text-white shadow-lg'
-                      : 'bg-neutral-150 text-neutral-700 hover:bg-neutral-200 hover:shadow-sm'
+                      ? 'bg-neutral-900 text-white'
+                      : 'bg-white text-neutral-700 hover:bg-neutral-50'
                   }`}
                 >
                   {cat.label}
@@ -137,7 +140,7 @@ export function ProductsClient({
               <select
                 value={initialSort ?? ''}
                 onChange={(e) => updateFilter('sort', e.target.value)}
-                className="appearance-none w-full text-xs sm:text-sm font-medium border border-neutral-200 pl-3 sm:pl-4 pr-8 sm:pr-10 py-2.5 bg-white rounded-lg sm:rounded-xl focus:outline-none focus:border-neutral-900 focus:ring-2 focus:ring-neutral-900/5 transition-all cursor-pointer"
+                className="appearance-none w-full text-xs sm:text-sm font-bold border-2 border-neutral-900 pl-3 sm:pl-4 pr-8 sm:pr-10 py-2.5 bg-white rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
                 aria-label="Sort products"
               >
                 {SORT_OPTIONS.map((o) => (
@@ -157,7 +160,7 @@ export function ProductsClient({
               <select
                 value={initialSort ?? ''}
                 onChange={(e) => updateFilter('sort', e.target.value)}
-                className="appearance-none text-sm font-medium border border-neutral-200 pl-4 pr-10 py-2.5 bg-white rounded-xl focus:outline-none focus:border-neutral-900 focus:ring-2 focus:ring-neutral-900/5 transition-all cursor-pointer"
+                className="appearance-none text-sm font-bold border-2 border-neutral-900 pl-4 pr-10 py-2.5 bg-white rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
                 aria-label="Sort products"
               >
                 {SORT_OPTIONS.map((o) => (
@@ -170,15 +173,15 @@ export function ProductsClient({
             </div>
 
             {/* Grid Toggle */}
-            <div className="flex items-center gap-1 border border-neutral-200 rounded-xl p-1">
+            <div className="flex items-center gap-1 border-2 border-neutral-900 rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] p-1">
               {[2, 3, 4].map((cols) => (
                 <button
                   key={cols}
                   onClick={() => setGridCols(cols as 2 | 3 | 4)}
-                  className={`w-8 h-8 flex items-center justify-center rounded-lg transition-all ${
+                  className={`w-8 h-8 flex items-center justify-center rounded-none transition-all ${
                     gridCols === cols
                       ? 'bg-neutral-900 text-white'
-                      : 'text-neutral-400 hover:text-neutral-700'
+                      : 'text-neutral-400 hover:text-neutral-900'
                   }`}
                   aria-label={`${cols} columns`}
                 >
@@ -200,7 +203,7 @@ export function ProductsClient({
           >
             <span className="text-xs font-semibold text-neutral-600 mr-2">Active Filters:</span>
             {initialCategory && (
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-neutral-100 text-neutral-700 text-xs font-medium rounded-lg">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-white text-neutral-900 text-xs font-bold border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none">
                 {CATEGORIES.find(c => c.value === initialCategory)?.label || initialCategory}
                 <button
                   onClick={() => updateFilter('category', '')}
@@ -212,7 +215,7 @@ export function ProductsClient({
               </span>
             )}
             {initialSort && (
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-neutral-100 text-neutral-700 text-xs font-medium rounded-lg">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-white text-neutral-900 text-xs font-bold border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none">
                 {SORT_OPTIONS.find(o => o.value === initialSort)?.label}
                 <button
                   onClick={() => updateFilter('sort', '')}
@@ -224,7 +227,7 @@ export function ProductsClient({
               </span>
             )}
             {query && (
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-neutral-100 text-neutral-700 text-xs font-medium rounded-lg">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-white text-neutral-900 text-xs font-bold border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none">
                 <span className="truncate max-w-[120px] sm:max-w-[200px]">Search: {query}</span>
                 <button
                   onClick={() => updateFilter('q', '')}
@@ -237,7 +240,7 @@ export function ProductsClient({
             )}
             <button
               onClick={clearFilters}
-              className="text-xs font-semibold text-neutral-600 hover:text-neutral-950 transition-colors ml-2 px-3 py-1 rounded hover:bg-neutral-100"
+              className="text-xs font-bold text-neutral-700 border-2 border-neutral-900 rounded-none px-3 py-1 ml-2 bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all"
             >
               Clear All
             </button>
@@ -251,8 +254,8 @@ export function ProductsClient({
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col items-center justify-center py-16 sm:py-24 lg:py-32 text-center px-4"
           >
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-neutral-100 rounded-full flex items-center justify-center mb-4 sm:mb-6">
-              <Search size={24} className="sm:w-8 sm:h-8 text-neutral-400" strokeWidth={1.5} />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] rounded-none flex items-center justify-center mb-4 sm:mb-6">
+              <Search size={24} className="sm:w-8 sm:h-8 text-neutral-900" strokeWidth={1.5} />
             </div>
             <h2 className="text-lg sm:text-xl font-bold text-neutral-900 mb-1 sm:mb-2">No products found</h2>
             <p className="text-neutral-500 text-xs sm:text-sm max-w-xs sm:max-w-sm mb-4 sm:mb-6">
@@ -327,7 +330,7 @@ export function ProductsClient({
                   <h2 className="text-base sm:text-lg font-bold text-neutral-900">Filters</h2>
                   <button
                     onClick={() => setMobileFiltersOpen(false)}
-                    className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center hover:bg-neutral-100 rounded-lg sm:rounded-xl transition-colors"
+                    className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center hover:bg-neutral-100 border-2 border-transparent hover:border-neutral-900 rounded-none transition-colors"
                   >
                     <X size={18} className="sm:w-5 sm:h-5" />
                   </button>
@@ -348,10 +351,10 @@ export function ProductsClient({
                               updateFilter('category', cat.value);
                               setMobileFiltersOpen(false);
                             }}
-                            className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl transition-all ${
+                            className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs sm:text-sm font-bold border-2 border-neutral-900 rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${
                               isActive
-                                ? 'bg-neutral-900 text-white'
-                                : 'bg-neutral-50 text-neutral-700 hover:bg-neutral-100'
+                                ? 'bg-neutral-900 text-white border-neutral-900 shadow-none'
+                                : 'bg-white text-neutral-700 hover:bg-neutral-50 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
                             }`}
                           >
                             {cat.label}
@@ -374,10 +377,10 @@ export function ProductsClient({
                               updateFilter('sort', option.value);
                               setMobileFiltersOpen(false);
                             }}
-                            className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl transition-all ${
+                            className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs sm:text-sm font-bold border-2 border-neutral-900 rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${
                               isActive
-                                ? 'bg-neutral-900 text-white'
-                                : 'bg-neutral-50 text-neutral-700 hover:bg-neutral-100'
+                                ? 'bg-neutral-900 text-white border-neutral-900 shadow-none'
+                                : 'bg-white text-neutral-700 hover:bg-neutral-50 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
                             }`}
                           >
                             {option.label}

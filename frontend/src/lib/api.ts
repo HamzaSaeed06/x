@@ -1,16 +1,10 @@
 const BASE = '/api';
 
-const TOKEN_KEY = 'zest_token';
-
 export function getToken(): string | null {
-  try { return localStorage.getItem(TOKEN_KEY); } catch { return null; }
+  return null; // Token handled by cookies
 }
-export function setToken(token: string): void {
-  try { localStorage.setItem(TOKEN_KEY, token); } catch {}
-}
-export function clearToken(): void {
-  try { localStorage.removeItem(TOKEN_KEY); } catch {}
-}
+export function setToken(_token: string): void {}
+export function clearToken(): void {}
 
 class ApiError extends Error {
   status: number;
@@ -31,13 +25,13 @@ async function request<T>(
   const token = getToken();
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...extraHeaders,
   };
 
   const res = await fetch(`${BASE}${path}`, {
     method,
     headers,
+    credentials: 'true' ? 'include' : 'same-origin', // ensure cookies are sent
     body: body != null ? JSON.stringify(body) : undefined,
   });
 

@@ -16,13 +16,16 @@ export function generateToken(payload: { id: string; email: string; role: string
 }
 
 export function requireAuth(req: AuthRequest, res: Response, next: NextFunction): void {
+  let token = req.cookies?.token;
   const header = req.headers.authorization;
-  if (!header || !header.startsWith('Bearer ')) {
+  if (!token && header && header.startsWith('Bearer ')) {
+    token = header.slice(7);
+  }
+
+  if (!token) {
     res.status(401).json({ error: 'Authentication required' });
     return;
   }
-
-  const token = header.slice(7);
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as {
       id: string;
@@ -47,10 +50,15 @@ export function requireAdmin(req: AuthRequest, res: Response, next: NextFunction
 }
 
 export function optionalAuth(req: AuthRequest, _res: Response, next: NextFunction): void {
+  let token = req.cookies?.token;
   const header = req.headers.authorization;
-  if (header?.startsWith('Bearer ')) {
+  if (!token && header && header.startsWith('Bearer ')) {
+    token = header.slice(7);
+  }
+
+  if (token) {
     try {
-      const decoded = jwt.verify(header.slice(7), JWT_SECRET) as {
+      const decoded = jwt.verify(token, JWT_SECRET) as {
         id: string;
         email: string;
         role: string;

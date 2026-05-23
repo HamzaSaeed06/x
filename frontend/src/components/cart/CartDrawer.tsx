@@ -55,7 +55,7 @@ export function CartDrawer() {
             {/* Header */}
             <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 border-b border-neutral-100">
               <div className="flex items-center gap-2 sm:gap-3">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-neutral-100 rounded-lg sm:rounded-xl flex items-center justify-center">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none flex items-center justify-center">
                   <ShoppingBag size={18} className="sm:w-5 sm:h-5 text-neutral-700" />
                 </div>
                 <div>
@@ -69,7 +69,7 @@ export function CartDrawer() {
               </div>
               <button 
                 onClick={closeCart} 
-                className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center hover:bg-neutral-100 rounded-lg sm:rounded-xl transition-colors" 
+                className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center hover:bg-neutral-100 border-2 border-transparent hover:border-neutral-900 rounded-none transition-colors" 
                 aria-label="Close cart"
               >
                 <X size={18} className="sm:w-5 sm:h-5 text-neutral-600" />
@@ -135,10 +135,10 @@ export function CartDrawer() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
-                      className="flex gap-3 sm:gap-4 p-2.5 sm:p-3 bg-neutral-50 rounded-xl sm:rounded-2xl"
+                      className="flex gap-3 sm:gap-4 p-2.5 sm:p-3 bg-white border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] rounded-none"
                     >
                       {/* Image */}
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-lg sm:rounded-xl overflow-hidden flex-shrink-0 border border-neutral-100">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white border-2 border-neutral-900 rounded-none overflow-hidden flex-shrink-0">
                         <img 
                           src={item.image}
                           alt={item.name}
@@ -170,7 +170,7 @@ export function CartDrawer() {
 
                         <div className="flex items-center justify-between mt-2 sm:mt-3">
                           {/* Quantity Control */}
-                          <div className="flex items-center bg-white border border-neutral-200 rounded-lg overflow-hidden">
+                          <div className="flex items-center bg-white border-2 border-neutral-900 rounded-none">
                             <button
                               onClick={() => updateQty(item.productId, item.qty - 1, item.variantId)}
                               className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center hover:bg-neutral-100 transition-colors disabled:opacity-40"
@@ -213,7 +213,7 @@ export function CartDrawer() {
                     <input
                       type="text"
                       placeholder="Promo code"
-                      className="w-full h-9 sm:h-10 pl-8 sm:pl-10 pr-3 sm:pr-4 text-xs sm:text-sm border border-neutral-200 rounded-lg sm:rounded-xl focus:outline-none focus:border-neutral-900 focus:ring-2 focus:ring-neutral-900/5"
+                      className="w-full h-9 sm:h-10 pl-8 sm:pl-10 pr-3 sm:pr-4 text-xs sm:text-sm border-2 border-neutral-900 rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all bg-white"
                     />
                   </div>
                   <Button variant="outline" size="sm" className="h-9 sm:h-10 px-3 sm:px-4 text-xs sm:text-sm">

@@ -172,25 +172,25 @@ const features = [
     icon: Truck,
     title: 'Free Delivery',
     desc: 'On orders over PKR 5,000',
-    color: 'bg-info-light text-info',
+    color: 'bg-blue-50 text-blue-600',
   },
   {
     icon: RotateCcw,
     title: 'Easy Returns',
     desc: '30-day hassle-free returns',
-    color: 'bg-success-bg text-success',
+    color: 'bg-green-50 text-green-600',
   },
   {
     icon: Shield,
     title: 'Secure Payment',
     desc: 'Multiple payment options',
-    color: 'bg-accent-light text-accent',
+    color: 'bg-orange-50 text-orange-600',
   },
   {
     icon: CreditCard,
     title: 'Premium Quality',
     desc: 'Curated with care',
-    color: 'bg-secondary-light text-secondary',
+    color: 'bg-purple-50 text-purple-600',
   },
 ];
 
@@ -233,13 +233,13 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 text-center sm:text-left"
+                className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 text-center sm:text-left p-4 bg-white border-2 border-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all duration-200"
               >
-                <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${feature.color}`}>
+                <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-none border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center flex-shrink-0 ${feature.color}`}>
                   <feature.icon className="w-6 h-6 sm:w-7 sm:h-7" strokeWidth={1.5} />
                 </div>
                 <div className="min-w-0">
-                  <p className="font-semibold text-sm sm:text-base text-neutral-900">{feature.title}</p>
+                  <p className="font-bold text-sm sm:text-base text-neutral-900">{feature.title}</p>
                   <p className="text-xs sm:text-sm text-neutral-600 mt-0.5">{feature.desc}</p>
                 </div>
               </motion.div>
@@ -268,7 +268,7 @@ export default function HomePage() {
                 transition={{ delay: index * 0.1, duration: 0.5 }}
               >
                 <Link href={`/products?category=${cat.slug}`}>
-                  <div className="relative overflow-hidden rounded-2xl lg:rounded-3xl group cursor-pointer aspect-[4/5] sm:aspect-[4/5] bg-neutral-100 category-card shadow-sm hover:shadow-lg transition-shadow duration-300">
+                  <div className="relative overflow-hidden rounded-none group cursor-pointer aspect-[4/5] sm:aspect-[4/5] bg-neutral-100 border-2 border-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[7px_7px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-3px] hover:translate-y-[-3px] transition-all duration-300">
                     <img
                       src={cat.image}
                       alt={cat.name}
@@ -300,8 +300,8 @@ export default function HomePage() {
 
         {/* Flash Sale */}
         {settings?.flashSaleBannerActive && (
-          <section className="bg-neutral-950 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 sm:py-14 md:py-16 lg:py-20 rounded-none sm:rounded-3xl sm:mx-0 shadow-2xl">
-            <div className="max-w-7xl mx-auto">
+          <section className="bg-neutral-950 py-10 sm:py-14 md:py-16 lg:py-20 border-2 border-neutral-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
                 <div>
                   <span className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 bg-white/10 text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider rounded-full mb-2 sm:mb-3">
@@ -320,7 +320,7 @@ export default function HomePage() {
                 <Button
                   asChild
                   size="sm"
-                  className="bg-white text-neutral-900 hover:bg-neutral-100 self-start sm:self-auto h-9 sm:h-10 text-xs sm:text-sm"
+                  className="bg-white text-neutral-900 hover:bg-neutral-100 self-start sm:self-auto h-9 sm:h-10 text-xs sm:text-sm rounded-none border-2 border-white shadow-[3px_3px_0px_0px_rgba(255,255,255,0.4)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.4)] transition-all"
                 >
                   <Link href="/products?sort=flash-sale">
                     Shop All Deals
@@ -346,43 +346,43 @@ export default function HomePage() {
         </section>
 
         {/* Promo Banner */}
-        <section className="relative overflow-hidden rounded-2xl lg:rounded-3xl bg-gradient-to-r from-neutral-100 to-neutral-50 shadow-lg">
+        <section className="relative overflow-hidden rounded-none bg-neutral-50 border-2 border-neutral-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
           <div className="grid lg:grid-cols-2 gap-0">
-            <div className="p-8 sm:p-10 md:p-12 lg:p-14 xl:p-16 flex flex-col justify-center order-2 lg:order-1">
-              <span className="inline-flex items-center gap-1.5 w-fit px-3 py-1.5 bg-neutral-900 text-white text-xs font-bold uppercase tracking-wider rounded-full mb-4 sm:mb-6">
+            <div className="p-6 sm:p-10 md:p-12 lg:p-14 xl:p-16 flex flex-col justify-center order-2 lg:order-1">
+              <span className="inline-flex items-center gap-1.5 w-fit px-3 py-1.5 bg-neutral-900 text-white text-xs font-bold uppercase tracking-wider rounded-none mb-4 sm:mb-6 border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
                 <Star size={14} className="fill-white" />
                 Exclusive
               </span>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-950 tracking-tight leading-tight mb-4 sm:mb-5">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-neutral-950 tracking-tight leading-tight mb-3 sm:mb-5">
                 Get 20% Off
                 <br />
-                <span className="text-neutral-600">Your First Order</span>
+                <span className="text-neutral-500">Your First Order</span>
               </h2>
-              <p className="text-neutral-700 text-base sm:text-lg mb-8 max-w-md leading-relaxed">
+              <p className="text-neutral-600 text-sm sm:text-base lg:text-lg mb-6 sm:mb-8 max-w-md leading-relaxed">
                 Join our community and enjoy exclusive benefits, early access to sales, and personalized recommendations.
               </p>
               <div className="flex flex-col xs:flex-row gap-2 sm:gap-3">
-                <Button asChild size="lg" className="rounded-full h-11 sm:h-12 text-sm sm:text-base">
+                <Button asChild size="lg" className="h-11 sm:h-12 text-sm sm:text-base rounded-none border-2 border-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all">
                   <Link href="/auth/signup">
                     Create Account
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="rounded-full h-11 sm:h-12 text-sm sm:text-base">
+                <Button asChild variant="outline" size="lg" className="h-11 sm:h-12 text-sm sm:text-base rounded-none border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
                   <Link href="/products">
                     Browse Products
                   </Link>
                 </Button>
               </div>
             </div>
-            <div className="relative h-48 sm:h-56 md:h-64 lg:h-auto order-1 lg:order-2">
+            <div className="relative h-44 sm:h-56 md:h-72 lg:h-auto order-1 lg:order-2 min-h-[180px]">
               <img
                 src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80"
                 alt="Promotional banner"
                 className="absolute inset-0 w-full h-full object-cover"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-neutral-100 via-neutral-100/50 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-b lg:bg-gradient-to-r from-neutral-50/90 via-neutral-50/30 to-transparent" />
             </div>
           </div>
         </section>
@@ -441,7 +441,7 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="p-4 sm:p-6"
+                className="p-4 sm:p-6 bg-white border-2 border-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all duration-200"
               >
                 <p className="text-2xl sm:text-3xl lg:text-4xl font-black text-neutral-900 mb-1 sm:mb-2">
                   {stat.value}

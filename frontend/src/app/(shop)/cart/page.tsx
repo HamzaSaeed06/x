@@ -68,8 +68,8 @@ export default function CartPage() {
         {/* Items */}
         <div className="lg:col-span-2 space-y-3 sm:space-y-4">
           {items.map((item) => (
-            <div key={`${item.productId}-${item.variantId}`} className="flex gap-3 sm:gap-4 p-3 sm:p-4 border border-[var(--border-default)] bg-white rounded-lg sm:rounded-none">
-              <Link href={`/products/${item.productId}`} className="w-20 h-20 sm:w-24 sm:h-24 relative bg-[var(--neutral-50)] flex-shrink-0 rounded-md sm:rounded-none overflow-hidden">
+            <div key={`${item.productId}-${item.variantId}`} className="flex gap-3 sm:gap-4 p-3 sm:p-4 border-2 border-neutral-900 bg-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] rounded-none">
+              <Link href={`/products/${item.productId}`} className="w-20 h-20 sm:w-24 sm:h-24 relative bg-white flex-shrink-0 rounded-none border-2 border-neutral-900 overflow-hidden">
                 <img src={item.image} alt={item.name} className="w-full h-full object-contain mix-blend-multiply p-1" />
               </Link>
               <div className="flex-1 min-w-0">
@@ -88,22 +88,20 @@ export default function CartPage() {
                 {item.variant && <p className="text-[11px] sm:text-[12px] text-[var(--neutral-500)] mt-0.5 sm:mt-1">{item.variant}</p>}
                 <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-2 mt-2 sm:mt-3">
                   <div className="flex items-center">
-                    <Button 
+                    <button 
                       onClick={() => updateQty(item.productId, item.qty - 1, item.variantId)} 
-                      variant="quantity"
-                      className="w-8 h-8 sm:w-9 sm:h-9"
+                      className="w-8 h-8 sm:w-9 sm:h-9 rounded-none border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-white hover:bg-neutral-50 active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center p-0 font-bold transition-all text-neutral-900"
                     >
                       <Minus size={10} className="sm:w-3 sm:h-3" />
-                    </Button>
-                    <span className="px-3 sm:px-5 text-[13px] sm:text-[14px] font-bold tabular-nums border-y border-neutral-200 h-8 sm:h-[36px] flex items-center">{item.qty}</span>
-                    <Button 
+                    </button>
+                    <span className="px-3 sm:px-5 text-[13px] sm:text-[14px] font-extrabold tabular-nums border-y-2 border-neutral-900 h-8 sm:h-[36px] flex items-center bg-white">{item.qty}</span>
+                    <button 
                       onClick={() => updateQty(item.productId, item.qty + 1, item.variantId)} 
                       disabled={item.qty >= item.stock}
-                      variant="quantity"
-                      className="w-8 h-8 sm:w-9 sm:h-9"
+                      className="w-8 h-8 sm:w-9 sm:h-9 rounded-none border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-white hover:bg-neutral-50 active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center p-0 font-bold transition-all text-neutral-900 disabled:opacity-45"
                     >
                       <Plus size={10} className="sm:w-3 sm:h-3" />
-                    </Button>
+                    </button>
                   </div>
                   <span className="text-[14px] sm:text-[16px] font-extrabold text-black tabular-nums">{formatPrice(item.price * item.qty)}</span>
                 </div>
@@ -113,11 +111,11 @@ export default function CartPage() {
         </div>
 
         {/* Summary */}
-        <div className="border border-[var(--border-default)] bg-white p-4 sm:p-6 h-fit space-y-3 sm:space-y-4 lg:sticky lg:top-24 rounded-lg sm:rounded-none">
+        <div className="border-2 border-neutral-900 bg-white p-4 sm:p-6 h-fit space-y-3 sm:space-y-4 lg:sticky lg:top-24 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] rounded-none">
           <h2 className="text-[13px] sm:text-[14px] font-bold text-black">Order Summary</h2>
 
           {/* Free Delivery Progress Bar */}
-          <div className="bg-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-3.5 border border-gray-100">
+          <div className="bg-neutral-50 border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] p-3 sm:p-3.5 rounded-none">
             {isFreeShipping ? (
               <div className="flex items-center gap-2 text-green-600">
                 <Package size={14} className="sm:w-[15px] sm:h-[15px] flex-shrink-0" />
@@ -131,9 +129,9 @@ export default function CartPage() {
                   </span>
                   <span className="text-[10px] sm:text-[11px] text-gray-400">{Math.round(progressPct)}%</span>
                 </div>
-                <div className="h-1 sm:h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-2 sm:h-2.5 bg-neutral-200 border border-neutral-900 rounded-none overflow-hidden">
                   <div
-                    className="h-full bg-black rounded-full transition-all duration-700 ease-out"
+                    className="h-full bg-neutral-900 rounded-none transition-all duration-700 ease-out"
                     style={{ width: `${progressPct}%` }}
                   />
                 </div>
@@ -159,10 +157,13 @@ export default function CartPage() {
             <span>Total</span>
             <span className="tabular-nums">{formatPrice(isFreeShipping ? subtotal : subtotal + shippingCost)}</span>
           </div>
-          <Button onClick={handleCheckout} variant="checkout" className="gap-2 h-11 sm:h-12 text-[13px] sm:text-sm">
+          <Button 
+            onClick={handleCheckout} 
+            className="w-full h-11 sm:h-12 text-[13px] sm:text-sm bg-neutral-900 text-white border-2 border-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-neutral-800 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] rounded-none font-bold gap-2 flex items-center justify-center transition-all"
+          >
             Proceed to Checkout <ArrowRight size={14} className="sm:w-4 sm:h-4" />
           </Button>
-          <Button asChild variant="text-link" className="w-full text-center py-1.5 sm:py-2 h-auto text-[12px] sm:text-[13px]">
+          <Button asChild variant="link" className="w-full text-center py-1.5 sm:py-2 h-auto text-[12px] sm:text-[13px]">
             <Link href="/products">Continue Shopping</Link>
           </Button>
         </div>

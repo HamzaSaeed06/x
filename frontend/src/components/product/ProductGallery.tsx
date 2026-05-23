@@ -146,12 +146,12 @@ export function ProductGallery({
                 <motion.button
                   key={i}
                   onClick={() => setActiveIndex(i)}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ x: -2, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`relative w-16 h-16 lg:w-20 lg:h-20 rounded-lg lg:rounded-xl overflow-hidden border-2 transition-all duration-200 flex-shrink-0 ${
+                  className={`relative w-16 h-16 lg:w-20 lg:h-20 rounded-none overflow-hidden border-2 transition-all duration-200 flex-shrink-0 ${
                     activeIndex === i 
-                      ? 'border-neutral-900 shadow-md' 
-                      : 'border-neutral-200 hover:border-neutral-400'
+                      ? 'border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]' 
+                      : 'border-neutral-300 hover:border-neutral-900 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'
                   }`}
                 >
                   {item.type === 'image' ? (
@@ -175,7 +175,7 @@ export function ProductGallery({
           <div className="flex-1 min-w-0">
             <div
               ref={mainImageRef}
-              className={`relative w-full aspect-[4/5] sm:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-neutral-100 ${
+              className={`relative w-full aspect-[4/5] sm:aspect-square rounded-none overflow-hidden bg-neutral-100 border-2 border-neutral-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] ${
                 activeItem?.type === 'image' ? 'cursor-zoom-in' : ''
               }`}
               onClick={() => activeItem?.type === 'image' && openLightbox(activeIndex)}
@@ -187,7 +187,7 @@ export function ProductGallery({
             >
               {/* Badges */}
               {isFlashSale && discount > 0 && (
-                <span className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20 bg-neutral-900 text-white text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg shadow-lg">
+                <span className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20 bg-neutral-900 text-white text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 sm:py-1.5 rounded-none border border-neutral-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                   -{Math.round(discount)}% OFF
                 </span>
               )}
@@ -195,7 +195,7 @@ export function ProductGallery({
               {/* Zoom/Expand Hint */}
               {activeItem?.type === 'image' && (
                 <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 hidden sm:flex items-center gap-2">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/90 backdrop-blur-sm rounded-none border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <Maximize2 size={14} className="sm:w-[18px] sm:h-[18px] text-neutral-700" />
                   </div>
                 </div>
@@ -229,14 +229,14 @@ export function ProductGallery({
                 <>
                   <button
                     onClick={e => { e.stopPropagation(); goPrev(); }}
-                    className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-105 transition-all"
+                    className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-10 sm:h-10 bg-white border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none flex items-center justify-center hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all"
                     aria-label="Previous image"
                   >
                     <ChevronLeft size={16} className="sm:w-5 sm:h-5" strokeWidth={2} />
                   </button>
                   <button
                     onClick={e => { e.stopPropagation(); goNext(); }}
-                    className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-105 transition-all"
+                    className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-10 sm:h-10 bg-white border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none flex items-center justify-center hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all"
                     aria-label="Next image"
                   >
                     <ChevronRight size={16} className="sm:w-5 sm:h-5" strokeWidth={2} />
@@ -276,10 +276,10 @@ export function ProductGallery({
                   <button
                     key={i}
                     onClick={() => setActiveIndex(i)}
-                    className={`relative w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 rounded-lg sm:rounded-xl overflow-hidden border-2 transition-all ${
+                    className={`relative w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 rounded-none overflow-hidden border-2 transition-all ${
                       activeIndex === i 
-                        ? 'border-neutral-900' 
-                        : 'border-neutral-200'
+                        ? 'border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' 
+                        : 'border-neutral-300 hover:border-neutral-900'
                     }`}
                   >
                     {item.type === 'image' ? (

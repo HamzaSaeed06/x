@@ -113,7 +113,7 @@ export function TrustBadges({ variant = 'minimal' }: { variant?: 'full' | 'minim
                   className="flex flex-col items-center text-center"
                   variants={itemVariants}
                 >
-                  <div className="p-3 rounded-xl bg-neutral-100 mb-3 group-hover:bg-accent/10 transition-colors">
+                  <div className="p-3 rounded-none border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-neutral-50 mb-3 transition-colors">
                     <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-neutral-900" />
                   </div>
                   <p className="font-semibold text-sm sm:text-base text-neutral-900">
@@ -163,18 +163,17 @@ export function TrustBadges({ variant = 'minimal' }: { variant?: 'full' | 'minim
             return (
               <motion.div
                 key={badge.title}
-                className="group relative bg-white rounded-2xl p-8 border border-neutral-100 hover:border-neutral-200 transition-all duration-300 hover:shadow-lg"
+                className="group relative bg-white rounded-none p-8 border-2 border-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[7px_7px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-3px] hover:translate-y-[-3px] transition-all duration-300"
                 variants={itemVariants}
-                whileHover={{ y: -4 }}
               >
                 {/* Gradient background on hover */}
                 <div
-                  className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${badge.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
+                  className={`absolute inset-0 rounded-none bg-gradient-to-br ${badge.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
                 />
 
                 {/* Content */}
                 <div className="relative z-10">
-                  <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${badge.color} p-3 mb-4 flex items-center justify-center`}>
+                  <div className={`w-14 h-14 rounded-none border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-gradient-to-br ${badge.color} p-3 mb-4 flex items-center justify-center`}>
                     <Icon className="w-7 h-7 text-white" />
                   </div>
                   <h3 className="text-lg sm:text-xl font-bold text-neutral-950 mb-2">
@@ -217,10 +216,10 @@ export function TrustBadges({ variant = 'minimal' }: { variant?: 'full' | 'minim
               return (
                 <motion.div
                   key={cert.title}
-                  className="flex flex-col items-center text-center p-4 rounded-xl hover:bg-neutral-50 transition-colors"
+                  className="flex flex-col items-center text-center p-4 rounded-none border-2 border-transparent hover:border-neutral-900 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:bg-neutral-50 transition-all duration-200"
                   variants={itemVariants}
                 >
-                  <div className="p-4 rounded-lg bg-neutral-100 mb-3">
+                  <div className="p-4 rounded-none border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-neutral-100 mb-3">
                     <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-neutral-900" />
                   </div>
                   <p className="font-semibold text-sm sm:text-base text-neutral-900">
@@ -240,7 +239,7 @@ export function TrustBadges({ variant = 'minimal' }: { variant?: 'full' | 'minim
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-12 sm:mt-16 p-8 sm:p-12 bg-gradient-to-r from-accent/10 to-secondary/10 rounded-2xl border border-accent/20 text-center"
+          className="mt-12 sm:mt-16 p-8 sm:p-12 bg-neutral-50 rounded-none border-2 border-neutral-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center"
         >
           <p className="text-lg sm:text-xl font-bold text-neutral-950 mb-2">
             Not satisfied? We'll refund you.

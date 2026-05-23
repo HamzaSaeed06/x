@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -93,54 +93,54 @@
   --elevate-1: rgba(0,0,0,.03);
   --elevate-2: rgba(0,0,0,.08);
 
-  --background: 0 0% 100%;
-  --foreground: 0 0% 4%;
-  --border: 0 0% 88%;
+  --background: 40 15% 99%;
+  --foreground: 165 25% 12%;
+  --border: 38 15% 91%;
   --card: 0 0% 100%;
-  --card-foreground: 0 0% 4%;
-  --card-border: 0 0% 90%;
-  --sidebar: 0 0% 99%;
-  --sidebar-foreground: 0 0% 4%;
-  --sidebar-border: 0 0% 88%;
-  --sidebar-primary: 0 0% 0%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 0 0% 96%;
-  --sidebar-accent-foreground: 0 0% 4%;
-  --sidebar-ring: 0 0% 0%;
+  --card-foreground: 165 25% 12%;
+  --card-border: 38 15% 91%;
+  --sidebar: 40 15% 98%;
+  --sidebar-foreground: 165 25% 12%;
+  --sidebar-border: 38 15% 91%;
+  --sidebar-primary: 161 50% 16%;
+  --sidebar-primary-foreground: 40 20% 98%;
+  --sidebar-accent: 38 15% 94%;
+  --sidebar-accent-foreground: 165 25% 12%;
+  --sidebar-ring: 161 50% 16%;
   --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 4%;
-  --popover-border: 0 0% 90%;
-  --primary: 0 0% 4%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 0 0% 96%;
-  --secondary-foreground: 0 0% 4%;
-  --muted: 0 0% 96%;
-  --muted-foreground: 0 0% 45%;
-  --accent: 0 0% 96%;
-  --accent-foreground: 0 0% 4%;
-  --destructive: 0 72% 51%;
-  --destructive-foreground: 0 0% 100%;
-  --input: 0 0% 88%;
-  --ring: 0 0% 4%;
-  --chart-1: 221 83% 53%;
-  --chart-2: 142 71% 45%;
+  --popover-foreground: 165 25% 12%;
+  --popover-border: 38 15% 91%;
+  --primary: 161 50% 16%;
+  --primary-foreground: 40 20% 98%;
+  --secondary: 38 15% 94%;
+  --secondary-foreground: 165 25% 12%;
+  --muted: 38 18% 95%;
+  --muted-foreground: 38 8% 50%;
+  --accent: 33 72% 51%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --input: 38 15% 91%;
+  --ring: 161 50% 16%;
+  --chart-1: 161 50% 16%;
+  --chart-2: 33 72% 51%;
   --chart-3: 24 95% 53%;
   --chart-4: 262 83% 58%;
   --chart-5: 0 72% 51%;
 
   --app-font-sans: 'Inter', system-ui, sans-serif;
-  --app-font-serif: Georgia, serif;
+  --app-font-serif: 'Outfit', sans-serif;
   --app-font-mono: Menlo, monospace;
-  --radius: 0px;
+  --radius: 0.5rem;
 
-  --shadow-2xs: 0px 1px 2px rgba(0,0,0,.05);
-  --shadow-xs: 0px 1px 3px rgba(0,0,0,.06);
-  --shadow-sm: 0px 2px 4px rgba(0,0,0,.06);
-  --shadow: 0px 4px 8px rgba(0,0,0,.05);
-  --shadow-md: 0px 6px 16px rgba(0,0,0,.05);
-  --shadow-lg: 0px 12px 24px rgba(0,0,0,.05);
-  --shadow-xl: 0px 20px 40px rgba(0,0,0,.05);
-  --shadow-2xl: 0px 32px 64px rgba(0,0,0,.05);
+  --shadow-2xs: 0px 1px 0px 0px rgba(0,0,0,0.1);
+  --shadow-xs: 0px 2px 0px 0px rgba(0,0,0,0.15);
+  --shadow-sm: 0px 3px 0px 0px rgba(0,0,0,0.2);
+  --shadow: 0px 4px 0px 0px rgba(0,0,0,0.25);
+  --shadow-md: 0px 6px 0px 0px rgba(0,0,0,0.3);
+  --shadow-lg: 0px 8px 0px 0px rgba(0,0,0,0.3);
+  --shadow-xl: 0px 12px 0px 0px rgba(0,0,0,0.4);
+  --shadow-2xl: 0px 16px 0px 0px rgba(0,0,0,0.5);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 
@@ -196,49 +196,49 @@
   --elevate-1: rgba(255,255,255,.04);
   --elevate-2: rgba(255,255,255,.09);
 
-  --background: 0 0% 7%;
-  --foreground: 0 0% 98%;
-  --border: 0 0% 18%;
-  --card: 0 0% 10%;
-  --card-foreground: 0 0% 98%;
-  --card-border: 0 0% 18%;
-  --sidebar: 0 0% 5%;
-  --sidebar-foreground: 0 0% 98%;
-  --sidebar-border: 0 0% 18%;
-  --sidebar-primary: 0 0% 100%;
-  --sidebar-primary-foreground: 0 0% 0%;
-  --sidebar-accent: 0 0% 18%;
-  --sidebar-accent-foreground: 0 0% 98%;
-  --sidebar-ring: 0 0% 100%;
-  --popover: 0 0% 10%;
-  --popover-foreground: 0 0% 98%;
-  --popover-border: 0 0% 18%;
-  --primary: 0 0% 98%;
-  --primary-foreground: 0 0% 7%;
-  --secondary: 0 0% 18%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 0 0% 18%;
-  --muted-foreground: 0 0% 60%;
-  --accent: 0 0% 18%;
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 72% 51%;
-  --destructive-foreground: 0 0% 100%;
-  --input: 0 0% 25%;
-  --ring: 0 0% 98%;
+  --background: 165 25% 10%;
+  --foreground: 40 20% 98%;
+  --border: 165 15% 18%;
+  --card: 165 25% 8%;
+  --card-foreground: 40 20% 98%;
+  --card-border: 165 15% 18%;
+  --sidebar: 165 25% 9%;
+  --sidebar-foreground: 40 20% 98%;
+  --sidebar-border: 165 15% 18%;
+  --sidebar-primary: 161 50% 22%;
+  --sidebar-primary-foreground: 40 20% 98%;
+  --sidebar-accent: 165 15% 15%;
+  --sidebar-accent-foreground: 40 20% 98%;
+  --sidebar-ring: 161 50% 22%;
+  --popover: 165 25% 8%;
+  --popover-foreground: 40 20% 98%;
+  --popover-border: 165 15% 18%;
+  --primary: 161 50% 22%;
+  --primary-foreground: 40 20% 98%;
+  --secondary: 165 15% 15%;
+  --secondary-foreground: 40 20% 98%;
+  --muted: 165 15% 15%;
+  --muted-foreground: 165 10% 60%;
+  --accent: 33 72% 55%;
+  --accent-foreground: 40 20% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --input: 165 15% 18%;
+  --ring: 161 50% 22%;
   --chart-1: 221 83% 53%;
   --chart-2: 142 71% 45%;
   --chart-3: 24 95% 53%;
   --chart-4: 262 83% 58%;
   --chart-5: 0 72% 51%;
 
-  --shadow-2xs: 0px 1px 2px rgba(0,0,0,.3);
-  --shadow-xs: 0px 1px 3px rgba(0,0,0,.35);
-  --shadow-sm: 0px 2px 4px rgba(0,0,0,.35);
-  --shadow: 0px 4px 8px rgba(0,0,0,.3);
-  --shadow-md: 0px 6px 16px rgba(0,0,0,.3);
-  --shadow-lg: 0px 12px 24px rgba(0,0,0,.3);
-  --shadow-xl: 0px 20px 40px rgba(0,0,0,.3);
-  --shadow-2xl: 0px 32px 64px rgba(0,0,0,.3);
+  --shadow-2xs: 0px 1px 0px 0px rgba(0,0,0,1);
+  --shadow-xs: 0px 2px 0px 0px rgba(0,0,0,1);
+  --shadow-sm: 0px 3px 0px 0px rgba(0,0,0,1);
+  --shadow: 0px 4px 0px 0px rgba(0,0,0,1);
+  --shadow-md: 0px 6px 0px 0px rgba(0,0,0,1);
+  --shadow-lg: 0px 8px 0px 0px rgba(0,0,0,1);
+  --shadow-xl: 0px 12px 0px 0px rgba(0,0,0,1);
+  --shadow-2xl: 0px 16px 0px 0px rgba(0,0,0,1);
 
   --bg-primary: #111111;
   --bg-secondary: #1A1A1A;
@@ -260,6 +260,7 @@
 @layer base {
   * { @apply border-border; }
   body { @apply font-sans antialiased bg-background text-foreground; }
+  h1, h2, h3, h4, h5, h6 { font-size: revert; font-weight: revert; line-height: revert; }
 }
 
 @layer utilities {
@@ -269,7 +270,33 @@
     color: hsl(var(--muted-foreground));
     pointer-events: none;
   }
-  /* hover-elevate / active-elevate classes kept as no-op so existing class references don't break */
+
+  /* ── Product Card Interactions ── */
+  .product-card-hover { transition: box-shadow 0.3s ease, border-color 0.3s ease; }
+  .product-image-zoom { transition: transform 0.7s ease; }
+  .category-card { transition: box-shadow 0.3s ease; }
+  .category-image { transition: transform 0.7s ease; }
+  .product-actions { transition: opacity 0.3s ease, transform 0.3s ease; }
+
+  /* ── Safe Area ── */
+  .safe-area-inset-top    { padding-top:    env(safe-area-inset-top, 0px); }
+  .safe-area-inset-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .safe-area-inset-right  { padding-right:  env(safe-area-inset-right, 0px); }
+
+  /* ── Neutral-150 for skeleton loaders ── */
+  .bg-neutral-150 { background-color: hsl(210, 14%, 92%); }
+
+  /* ── Feature Icon Semantic Colors (aligned to single palette) ────────────── */
+  .bg-info-light     { background-color: hsl(243, 75%, 96%); }
+  .text-info         { color: hsl(243, 75%, 59%); }
+  .bg-success-bg     { background-color: #f0fdf4; }
+  .text-success      { color: #16a34a; }
+  .bg-accent-light   { background-color: hsl(243, 75%, 96%); }
+  .text-accent       { color: hsl(243, 75%, 59%); }
+  .bg-secondary-light { background-color: hsl(243, 60%, 95%); }
+  .text-secondary    { color: hsl(243, 75%, 59%); }
+
+  /* ── Elevation toggles ── */
   .no-default-hover-elevate {}
   .no-default-active-elevate {}
   .hover-elevate {}

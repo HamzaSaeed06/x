@@ -37,7 +37,7 @@ export function FlashSaleCountdown() {
       ].map(({ val, label }, i) => (
         <div key={label} className="flex items-center gap-2">
           <div className="flex flex-col items-center">
-            <span className="text-xl font-extrabold text-white tabular-nums w-10 text-center bg-white/10 rounded px-1 py-0.5">{val}</span>
+            <span className="text-xl font-extrabold text-white tabular-nums w-10 text-center bg-white/10 rounded-none border border-white/20 px-1 py-0.5">{val}</span>
             <span className="text-[9px] text-white/40 font-bold mt-0.5">{label}</span>
           </div>
           {i < 2 && <span className="text-white/50 font-bold text-lg -mt-2">:</span>}

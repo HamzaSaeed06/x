@@ -43,7 +43,7 @@ export function NewsletterSignup() {
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
-      className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-neutral-900 via-neutral-950 to-neutral-900 relative overflow-hidden rounded-2xl lg:rounded-3xl"
+      className="py-12 sm:py-16 lg:py-20 bg-neutral-950 border-2 border-neutral-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden rounded-none"
     >
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -100,14 +100,14 @@ export function NewsletterSignup() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={isLoading || isSuccess}
-              className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-lg sm:rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
+              className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-none bg-neutral-900 border-2 border-neutral-800 text-white placeholder:text-neutral-500 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] focus:outline-none focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.6)] focus:border-neutral-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
             />
           </div>
           
           <Button
             type="submit"
             disabled={isLoading || isSuccess}
-            className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-black rounded-lg sm:rounded-xl gap-2 font-semibold transition-all h-[44px] sm:h-[52px]"
+            className="w-full sm:w-auto bg-amber-400 text-black hover:bg-amber-300 border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] rounded-none gap-2 font-bold h-[44px] sm:h-[52px] transition-all"
           >
             {isSuccess ? (
               <>

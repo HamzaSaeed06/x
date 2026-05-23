@@ -60,6 +60,12 @@ router.post('/google', async (req, res) => {
     }
 
     const token = generateToken({ id: user._id.toString(), email: user.email, role: user.role });
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
     res.json({
       token,
       user: {
@@ -101,6 +107,12 @@ router.post('/register', authLimiter, async (req, res) => {
     }
     const user = await User.create({ email, password, name, displayName: name, loyaltyPoints: 100 });
     const token = generateToken({ id: user._id.toString(), email: user.email, role: user.role });
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
     res.status(201).json({
       token,
       user: {
@@ -141,6 +153,12 @@ router.post('/login', authLimiter, async (req, res) => {
       return;
     }
     const token = generateToken({ id: user._id.toString(), email: user.email, role: user.role });
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
     res.json({
       token,
       user: {
@@ -165,6 +183,7 @@ router.post('/login', authLimiter, async (req, res) => {
 
 // POST /api/auth/logout
 router.post('/logout', (_req, res) => {
+  res.clearCookie('token');
   res.json({ ok: true });
 });
 
@@ -262,7 +281,7 @@ router.post('/forgot-password', forgotLimiter, async (req, res) => {
     const resetUrl = `${frontendUrl}/auth/reset-password?token=${token}`;
 
     try {
-      await sendPasswordResetEmail(user.email, user.name, resetUrl);
+      await sendPasswordResetEmail(user.email, token);
     } catch (mailErr) {
       // Reset token if email fails
       user.passwordResetToken = undefined;

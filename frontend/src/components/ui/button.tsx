@@ -5,42 +5,42 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-[0.98]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-bold tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-neutral-900 text-white hover:bg-neutral-800 shadow-sm",
+          "bg-neutral-900 text-white border-2 border-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-neutral-800 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all",
         destructive:
-          "bg-red-600 text-white hover:bg-red-700 shadow-sm",
+          "bg-red-600 text-white border-2 border-red-800 shadow-[4px_4px_0px_0px_rgba(153,27,27,1)] hover:bg-red-700 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_rgba(153,27,27,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_0px_rgba(153,27,27,1)] transition-all",
         outline:
-          "border-2 border-neutral-900 bg-white text-neutral-900 hover:bg-neutral-50",
+          "border-2 border-neutral-900 bg-white text-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-neutral-50 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all",
         secondary:
-          "bg-neutral-100 text-neutral-900 hover:bg-neutral-200",
+          "bg-neutral-100 text-neutral-900 border-2 border-neutral-300 hover:bg-neutral-200 hover:border-neutral-900 transition-all",
         ghost: 
-          "hover:bg-neutral-100 text-neutral-700 hover:text-neutral-900",
+          "hover:bg-neutral-100 text-neutral-700 hover:text-neutral-900 border-2 border-transparent hover:border-neutral-200",
         link: 
-          "text-neutral-900 underline-offset-4 hover:underline p-0 h-auto",
+          "text-neutral-900 underline-offset-4 hover:underline p-0 h-auto border-0 shadow-none",
         // E-commerce specific variants
         "hero-cta":
-          "bg-white text-neutral-900 px-8 py-3.5 text-sm font-bold tracking-wide hover:bg-neutral-100 shadow-lg hover:shadow-xl transition-all duration-300",
+          "bg-white text-neutral-900 px-8 py-3.5 text-sm font-bold tracking-wide border-2 border-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-neutral-100 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] transition-all duration-300",
         "add-to-cart":
-          "bg-neutral-900 text-white px-6 py-3 font-bold tracking-wide hover:bg-neutral-800 shadow-md hover:shadow-lg",
+          "bg-neutral-900 text-white px-6 py-3 font-bold tracking-wide border-2 border-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-neutral-800 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all",
         "buy-now":
-          "bg-neutral-900 text-white px-6 py-3 font-bold tracking-wide hover:bg-neutral-800 shadow-lg hover:shadow-xl",
+          "bg-neutral-900 text-white px-6 py-3 font-bold tracking-wide border-2 border-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-neutral-800 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all",
         "icon-square":
-          "w-10 h-10 p-0 bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 rounded-lg",
+          "w-10 h-10 p-0 bg-white border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-neutral-900 hover:bg-neutral-100 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all",
         "icon-circle":
-          "w-10 h-10 p-0 rounded-full bg-white shadow-md border border-neutral-100 hover:shadow-lg hover:scale-105",
+          "w-10 h-10 p-0 rounded-full bg-white shadow-md border-2 border-neutral-200 hover:border-neutral-900 hover:shadow-lg hover:scale-105 transition-all",
       },
       size: {
-        default: "h-10 px-5 py-2.5 rounded-lg",
-        sm: "h-9 px-4 py-2 text-xs rounded-md",
-        lg: "h-12 px-8 py-3 text-base rounded-lg",
-        xl: "h-14 px-10 py-4 text-base rounded-xl",
-        icon: "h-10 w-10 rounded-lg p-0",
-        "icon-sm": "h-8 w-8 rounded-md p-0",
-        "icon-lg": "h-12 w-12 rounded-xl p-0",
+        default: "h-10 px-5 py-2.5 rounded-none",
+        sm: "h-9 px-4 py-2 text-xs rounded-none",
+        lg: "h-12 px-8 py-3 text-base rounded-none",
+        xl: "h-14 px-10 py-4 text-base rounded-none",
+        icon: "h-10 w-10 rounded-none p-0",
+        "icon-sm": "h-8 w-8 rounded-none p-0",
+        "icon-lg": "h-12 w-12 rounded-none p-0",
       },
     },
     defaultVariants: {

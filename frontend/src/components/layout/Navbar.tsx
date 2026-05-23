@@ -90,9 +90,7 @@ function SearchDropdown({ query, onSelect, isMobile = false }: SearchDropdownPro
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 8, scale: 0.98 }}
       transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-      className={`absolute top-full left-0 right-0 mt-3 bg-white border border-neutral-200 shadow-2xl overflow-hidden z-50 ${
-        isMobile ? 'rounded-xl' : 'rounded-2xl'
-      }`}
+      className={`absolute top-full left-0 right-0 mt-3 bg-white border-2 border-neutral-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-hidden z-50 rounded-none`}
     >
       {suggestions.length > 0 && (
         <div className="p-2 sm:p-3">
@@ -103,7 +101,7 @@ function SearchDropdown({ query, onSelect, isMobile = false }: SearchDropdownPro
             <button
               key={s}
               onMouseDown={() => onSelect(s)}
-              className="w-full flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm text-neutral-700 hover:bg-neutral-50 rounded-lg sm:rounded-xl transition-colors text-left group"
+              className="w-full flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm text-neutral-700 hover:bg-neutral-100 rounded-none transition-colors text-left group border-l-2 border-transparent hover:border-neutral-900"
             >
               <Search size={14} className="text-neutral-400 group-hover:text-neutral-600 transition-colors flex-shrink-0" />
               <span className="truncate">
@@ -137,7 +135,7 @@ function SearchDropdown({ query, onSelect, isMobile = false }: SearchDropdownPro
             <button
               key={r}
               onMouseDown={() => onSelect(r)}
-              className="w-full flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm text-neutral-600 hover:bg-neutral-50 rounded-lg sm:rounded-xl transition-colors text-left group"
+              className="w-full flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm text-neutral-600 hover:bg-neutral-100 rounded-none transition-colors text-left group border-l-2 border-transparent hover:border-neutral-900"
             >
               <Clock size={14} className="text-neutral-400 flex-shrink-0" />
               <span className="truncate">{r}</span>
@@ -156,7 +154,7 @@ function SearchDropdown({ query, onSelect, isMobile = false }: SearchDropdownPro
               <button
                 key={t}
                 onMouseDown={() => onSelect(t)}
-                className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 bg-neutral-100 hover:bg-neutral-900 hover:text-white text-neutral-700 text-[10px] sm:text-xs font-semibold rounded-full transition-all duration-200"
+                className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 bg-neutral-100 hover:bg-neutral-900 hover:text-white text-neutral-700 text-[10px] sm:text-xs font-semibold rounded-none border border-neutral-300 hover:border-neutral-900 transition-all duration-200"
               >
                 <TrendingUp size={10} className="sm:w-3 sm:h-3" />
                 {t}
@@ -169,7 +167,7 @@ function SearchDropdown({ query, onSelect, isMobile = false }: SearchDropdownPro
       <div className="border-t border-neutral-100 p-2 sm:p-3">
         <button
           onMouseDown={() => onSelect(query || '')}
-          className="w-full flex items-center justify-between text-xs sm:text-sm text-neutral-500 hover:text-neutral-900 transition-colors py-2 px-2 rounded-lg sm:rounded-xl hover:bg-neutral-50"
+          className="w-full flex items-center justify-between text-xs sm:text-sm text-neutral-500 hover:text-neutral-900 transition-colors py-2 px-2 rounded-none hover:bg-neutral-100"
         >
           <span className="truncate">{query ? `Search for "${query}"` : 'Browse all products'}</span>
           <ArrowRight size={14} className="sm:w-4 sm:h-4 flex-shrink-0" />
@@ -275,8 +273,8 @@ export function Navbar() {
       <header
         className={`sticky top-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/95 backdrop-blur-xl shadow-sm border-b border-neutral-100'
-            : 'bg-white border-b border-transparent'
+            ? 'bg-white shadow-[0_2px_0_0_rgba(0,0,0,0.9)] border-b-2 border-neutral-900'
+            : 'bg-white border-b-2 border-neutral-900'
         }`}
       >
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
@@ -299,10 +297,10 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-3 xl:px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 whitespace-nowrap ${
+                  className={`px-3 xl:px-4 py-2 text-sm font-medium rounded-none transition-all duration-200 whitespace-nowrap border-b-2 ${
                     location === link.href || (link.href !== '/products' && location.startsWith(link.href))
-                      ? 'text-neutral-900 bg-neutral-100'
-                      : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50'
+                      ? 'text-neutral-900 border-neutral-900'
+                      : 'text-neutral-600 hover:text-neutral-900 border-transparent hover:border-neutral-400'
                   }`}
                 >
                   {link.label}
@@ -325,7 +323,7 @@ export function Navbar() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onFocus={() => setSearchFocused(true)}
-                    className="w-full pl-9 lg:pl-11 pr-4 h-10 lg:h-11 text-sm border border-neutral-200 bg-neutral-50 focus:bg-white focus:outline-none focus:border-neutral-900 focus:ring-2 focus:ring-neutral-900/5 transition-all duration-200 rounded-lg lg:rounded-xl"
+                    className="w-full pl-9 lg:pl-11 pr-4 h-10 lg:h-11 text-sm border-2 border-neutral-300 bg-neutral-50 focus:bg-white focus:outline-none focus:border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.15)] focus:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 rounded-none"
                   />
                   {searchQuery && (
                     <button
@@ -350,7 +348,7 @@ export function Navbar() {
               {/* Mobile search toggle */}
               <button
                 onClick={() => setMobileSearchOpen(o => !o)}
-                className="md:hidden w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-neutral-700 hover:bg-neutral-100 rounded-lg sm:rounded-xl transition-colors"
+                className="md:hidden w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-neutral-700 hover:bg-neutral-100 rounded-none border-2 border-transparent hover:border-neutral-900 transition-all"
                 aria-label="Search"
               >
                 <Search size={18} className="sm:w-5 sm:h-5" />
@@ -359,7 +357,7 @@ export function Navbar() {
               {/* Wishlist */}
               <Link
                 href="/wishlist"
-                className="hidden sm:flex w-9 h-9 sm:w-10 sm:h-10 items-center justify-center text-neutral-700 hover:bg-neutral-100 rounded-lg sm:rounded-xl transition-colors relative group"
+                className="hidden sm:flex w-9 h-9 sm:w-10 sm:h-10 items-center justify-center text-neutral-700 hover:bg-neutral-100 rounded-none border-2 border-transparent hover:border-neutral-900 transition-all relative group"
               >
                 <Heart size={18} className="sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
               </Link>
@@ -372,7 +370,7 @@ export function Navbar() {
               {/* Cart */}
               <motion.button
                 onClick={openCart}
-                className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-neutral-700 hover:bg-neutral-100 rounded-lg sm:rounded-xl transition-colors relative group"
+                className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-neutral-700 hover:bg-neutral-100 rounded-none border-2 border-transparent hover:border-neutral-900 transition-all relative group"
                 whileTap={{ scale: 0.95 }}
                 aria-label="Open cart"
               >
@@ -401,7 +399,7 @@ export function Navbar() {
                 <div className="relative hidden sm:block" ref={userMenuRef}>
                   <button
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
-                    className="flex items-center gap-1.5 sm:gap-2 p-1 sm:p-1.5 pr-2 sm:pr-3 text-neutral-600 hover:text-neutral-900 transition-colors rounded-lg sm:rounded-xl hover:bg-neutral-100"
+                    className="flex items-center gap-1.5 sm:gap-2 p-1 sm:p-1.5 pr-2 sm:pr-3 text-neutral-600 hover:text-neutral-900 transition-all rounded-none border-2 border-transparent hover:border-neutral-900 hover:bg-neutral-50"
                   >
                     <div className="w-7 h-7 sm:w-8 sm:h-8 bg-neutral-900 rounded-full flex items-center justify-center text-white font-semibold text-xs sm:text-sm overflow-hidden ring-2 ring-white shadow-sm">
                       {user.photoURL ? (
@@ -423,7 +421,7 @@ export function Navbar() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.98 }}
                         transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-                        className="absolute right-0 top-full mt-2 w-52 sm:w-56 bg-white shadow-xl border border-neutral-100 rounded-xl sm:rounded-2xl py-2 z-50 overflow-hidden"
+                        className="absolute right-0 top-full mt-2 w-52 sm:w-56 bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] border-2 border-neutral-900 rounded-none py-2 z-50 overflow-hidden"
                       >
                         <div className="px-3 sm:px-4 py-2.5 sm:py-3 border-b border-neutral-100">
                           <p className="text-xs sm:text-sm font-bold text-neutral-900 truncate">{user.displayName || 'User'}</p>
@@ -500,7 +498,7 @@ export function Navbar() {
               {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-1.5 sm:p-2 text-neutral-700 lg:hidden hover:bg-neutral-100 rounded-lg sm:rounded-xl transition-colors ml-0.5 sm:ml-1"
+                className="p-1.5 sm:p-2 text-neutral-700 lg:hidden hover:bg-neutral-100 rounded-none border-2 border-transparent hover:border-neutral-900 transition-all ml-0.5 sm:ml-1"
                 aria-label="Toggle menu"
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -530,7 +528,7 @@ export function Navbar() {
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onFocus={() => setSearchFocused(true)}
                       autoFocus
-                      className="w-full pl-9 sm:pl-11 pr-9 sm:pr-10 h-10 sm:h-12 text-sm border border-neutral-200 bg-neutral-50 focus:bg-white focus:outline-none focus:border-neutral-900 rounded-lg sm:rounded-xl transition-all"
+                      className="w-full pl-9 sm:pl-11 pr-9 sm:pr-10 h-10 sm:h-12 text-sm border-2 border-neutral-900 bg-neutral-50 focus:bg-white focus:outline-none shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none transition-all"
                     />
                     {searchQuery && (
                       <button
@@ -557,7 +555,7 @@ export function Navbar() {
                     <button
                       key={t}
                       onClick={() => doSearch(t)}
-                      className="px-2.5 sm:px-3 py-1 sm:py-1.5 bg-neutral-100 text-neutral-700 text-[10px] sm:text-xs font-semibold rounded-full hover:bg-neutral-900 hover:text-white transition-all duration-200"
+                      className="px-2.5 sm:px-3 py-1 sm:py-1.5 bg-neutral-100 border border-neutral-300 text-neutral-700 text-[10px] sm:text-xs font-semibold rounded-none hover:bg-neutral-900 hover:border-neutral-900 hover:text-white transition-all duration-200"
                     >
                       {t}
                     </button>
@@ -588,7 +586,7 @@ export function Navbar() {
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
                 transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                className="fixed top-0 right-0 bottom-0 w-full max-w-xs sm:max-w-sm bg-white z-50 lg:hidden shadow-2xl overflow-y-auto safe-area-inset-right"
+                className="fixed top-0 right-0 bottom-0 w-full max-w-xs sm:max-w-sm bg-white z-50 lg:hidden border-l-2 border-neutral-900 shadow-[-8px_0px_0px_0px_rgba(0,0,0,0.5)] overflow-y-auto safe-area-inset-right"
               >
                 {/* Menu Header */}
                 <div className="flex items-center justify-between p-4 border-b border-neutral-100 sticky top-0 bg-white z-10">
@@ -598,7 +596,7 @@ export function Navbar() {
                   </Link>
                   <button
                     onClick={() => setMobileMenuOpen(false)}
-                    className="w-10 h-10 flex items-center justify-center hover:bg-neutral-100 rounded-xl transition-colors"
+                    className="w-10 h-10 flex items-center justify-center hover:bg-neutral-100 rounded-none border-2 border-transparent hover:border-neutral-900 transition-all"
                     aria-label="Close menu"
                   >
                     <X size={20} />
@@ -636,11 +634,11 @@ export function Navbar() {
                     <Link
                       href="/"
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 py-3 px-3 text-sm font-medium rounded-xl transition-colors ${
-                        location === '/'
-                          ? 'bg-neutral-100 text-neutral-900'
-                          : 'text-neutral-700 hover:bg-neutral-50'
-                      }`}
+                        className={`flex items-center gap-3 py-3 px-3 text-sm font-medium rounded-none border-l-2 transition-all ${
+                          location === '/'
+                            ? 'bg-neutral-100 text-neutral-900 border-neutral-900'
+                            : 'text-neutral-700 hover:bg-neutral-50 border-transparent hover:border-neutral-400'
+                        }`}
                     >
                       <Home size={18} className="text-neutral-500" />
                       Home
@@ -650,10 +648,10 @@ export function Navbar() {
                         key={link.href}
                         href={link.href}
                         onClick={() => setMobileMenuOpen(false)}
-                        className={`flex items-center justify-between py-3 px-3 text-sm font-medium rounded-xl transition-colors ${
+                        className={`flex items-center justify-between py-3 px-3 text-sm font-medium rounded-none border-l-2 transition-all ${
                           location === link.href || (link.href !== '/products' && location.includes(link.href.split('?')[0]))
-                            ? 'bg-neutral-100 text-neutral-900'
-                            : 'text-neutral-700 hover:bg-neutral-50'
+                            ? 'bg-neutral-100 text-neutral-900 border-neutral-900'
+                            : 'text-neutral-700 hover:bg-neutral-50 border-transparent hover:border-neutral-400'
                         }`}
                       >
                         <span className="flex items-center gap-3">
@@ -673,7 +671,7 @@ export function Navbar() {
                     <Link
                       href="/wishlist"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-3 py-3 px-3 text-sm font-medium text-neutral-700 hover:bg-neutral-50 rounded-xl transition-colors"
+                      className="flex items-center gap-3 py-3 px-3 text-sm font-medium text-neutral-700 hover:bg-neutral-50 rounded-none border-l-2 border-transparent hover:border-neutral-400 transition-all"
                     >
                       <Heart size={18} className="text-neutral-500" />
                       Wishlist
@@ -684,7 +682,7 @@ export function Navbar() {
                         <Link
                           href="/account/orders"
                           onClick={() => setMobileMenuOpen(false)}
-                          className="flex items-center gap-3 py-3 px-3 text-sm font-medium text-neutral-700 hover:bg-neutral-50 rounded-xl transition-colors"
+                          className="flex items-center gap-3 py-3 px-3 text-sm font-medium text-neutral-700 hover:bg-neutral-50 rounded-none border-l-2 border-transparent hover:border-neutral-400 transition-all"
                         >
                           <Package size={18} className="text-neutral-500" />
                           My Orders
@@ -692,7 +690,7 @@ export function Navbar() {
                         <Link
                           href="/account/profile"
                           onClick={() => setMobileMenuOpen(false)}
-                          className="flex items-center gap-3 py-3 px-3 text-sm font-medium text-neutral-700 hover:bg-neutral-50 rounded-xl transition-colors"
+                          className="flex items-center gap-3 py-3 px-3 text-sm font-medium text-neutral-700 hover:bg-neutral-50 rounded-none border-l-2 border-transparent hover:border-neutral-400 transition-all"
                         >
                           <Settings size={18} className="text-neutral-500" />
                           Settings
@@ -701,7 +699,7 @@ export function Navbar() {
                           <Link
                             href="/admin"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center gap-3 py-3 px-3 text-sm font-semibold text-neutral-900 hover:bg-neutral-50 rounded-xl transition-colors"
+                             className="flex items-center gap-3 py-3 px-3 text-sm font-semibold text-neutral-900 hover:bg-neutral-50 rounded-none border-l-2 border-neutral-900 transition-all"
                           >
                             <LayoutDashboard size={18} className="text-neutral-500" />
                             Admin Dashboard
@@ -712,7 +710,7 @@ export function Navbar() {
                       <Link
                         href="/auth/login"
                         onClick={() => setMobileMenuOpen(false)}
-                        className="flex items-center gap-3 py-3 px-3 text-sm font-medium text-neutral-900 bg-neutral-100 hover:bg-neutral-200 rounded-xl transition-colors mt-2"
+                        className="flex items-center gap-3 py-3 px-3 text-sm font-bold text-white bg-neutral-900 hover:bg-neutral-800 rounded-none border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] transition-all mt-2"
                       >
                         <User size={18} />
                         Sign In
@@ -729,7 +727,7 @@ export function Navbar() {
                         handleSignOut();
                         setMobileMenuOpen(false);
                       }}
-                      className="w-full flex items-center justify-center gap-2 py-3 px-4 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition-colors"
+                      className="w-full flex items-center justify-center gap-2 py-3 px-4 text-sm font-semibold text-red-600 bg-white border-2 border-red-600 hover:bg-red-600 hover:text-white rounded-none shadow-[3px_3px_0px_0px_rgba(220,38,38,0.4)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(220,38,38,0.6)] transition-all"
                     >
                       <LogOut size={18} />
                       Sign Out

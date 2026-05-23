@@ -317,7 +317,7 @@ export function ProductDetailClient({
                         key={val}
                         onClick={() => updateAttribute(attr.name, val)}
                         whileTap={{ scale: 0.97 }}
-                        className={`px-3 sm:px-5 py-2 sm:py-2.5 min-w-[2.5rem] sm:min-w-[3rem] text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl border-2 transition-all duration-200 ${
+                        className={`px-3 sm:px-5 py-2 sm:py-2.5 min-w-[2.5rem] sm:min-w-[3rem] text-xs sm:text-sm font-bold border-2 border-neutral-900 rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 ${
                           isSelected
                             ? 'bg-neutral-900 text-white border-neutral-900'
                             : 'bg-white text-neutral-700 border-neutral-200 hover:border-neutral-400'
@@ -339,7 +339,7 @@ export function ProductDetailClient({
         <motion.div 
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-amber-50 border border-amber-200 rounded-lg sm:rounded-xl mb-4 sm:mb-6"
+          className="flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-amber-50 border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] rounded-none mb-4 sm:mb-6"
         >
           <Sparkles size={14} className="sm:w-4 sm:h-4 text-amber-600" />
           <span className="text-xs sm:text-sm font-medium text-amber-800">
@@ -348,7 +348,7 @@ export function ProductDetailClient({
         </motion.div>
       )}
       {currentStock === 0 && (
-        <div className="flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-red-50 border border-red-200 rounded-lg sm:rounded-xl mb-4 sm:mb-6">
+        <div className="flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-red-50 border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] rounded-none mb-4 sm:mb-6">
           <Package size={14} className="sm:w-4 sm:h-4 text-red-600" />
           <span className="text-xs sm:text-sm font-medium text-red-800">
             Currently out of stock
@@ -361,21 +361,21 @@ export function ProductDetailClient({
         {/* Quantity Selector */}
         <div className="flex items-center gap-3 sm:gap-4">
           <span className="text-xs sm:text-sm font-medium text-neutral-700">Quantity:</span>
-          <div className="flex items-center border border-neutral-200 rounded-lg sm:rounded-xl overflow-hidden">
+          <div className="flex items-center border-2 border-neutral-900 rounded-none overflow-hidden shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-white">
             <button
               onClick={() => setQuantity(q => Math.max(1, q - 1))}
               disabled={quantity <= 1}
-              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-neutral-600 hover:bg-neutral-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-neutral-900 hover:bg-neutral-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               <Minus size={14} className="sm:w-4 sm:h-4" />
             </button>
-            <span className="w-10 sm:w-12 text-center text-xs sm:text-sm font-semibold tabular-nums">
+            <span className="w-10 sm:w-12 text-center text-xs sm:text-sm font-bold tabular-nums">
               {quantity}
             </span>
             <button
               onClick={() => setQuantity(q => Math.min(currentStock, q + 1))}
               disabled={quantity >= currentStock}
-              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-neutral-600 hover:bg-neutral-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-neutral-900 hover:bg-neutral-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               <Plus size={14} className="sm:w-4 sm:h-4" />
             </button>
@@ -388,16 +388,16 @@ export function ProductDetailClient({
             onClick={handleAddToCart}
             disabled={currentStock === 0 || isLoading}
             isLoading={isLoading}
-            className="flex-1 h-11 sm:h-12 lg:h-14 text-xs sm:text-sm lg:text-base font-semibold rounded-lg sm:rounded-xl"
+            className="flex-1 h-11 sm:h-12 lg:h-14 text-xs sm:text-sm lg:text-base font-bold rounded-none border-2 border-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all"
           >
-            <span className="hidden xs:inline">Add to Cart - {formatPrice(displayPrice * quantity)}</span>
-            <span className="xs:hidden">Add - {formatPrice(displayPrice * quantity)}</span>
+            <span className="hidden xs:inline">Add to Cart — {formatPrice(displayPrice * quantity)}</span>
+            <span className="xs:hidden">Add — {formatPrice(displayPrice * quantity)}</span>
           </Button>
           <Button
             onClick={handleWishlist}
             variant="outline"
-            className={`w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 p-0 rounded-lg sm:rounded-xl flex-shrink-0 ${
-              wishlisted ? 'border-red-200 text-red-500 bg-red-50' : ''
+            className={`w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 p-0 rounded-none border-2 flex-shrink-0 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all ${
+              wishlisted ? 'border-red-400 text-red-500 bg-red-50' : 'border-neutral-900'
             }`}
             aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
           >
@@ -406,7 +406,7 @@ export function ProductDetailClient({
           <Button
             onClick={handleShare}
             variant="outline"
-            className="w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 p-0 rounded-lg sm:rounded-xl flex-shrink-0 hidden xs:flex"
+            className="w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 p-0 rounded-none border-2 border-neutral-900 flex-shrink-0 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hidden xs:flex"
             aria-label="Share product"
           >
             <Share2 size={18} className="sm:w-5 sm:h-5" />
@@ -415,27 +415,27 @@ export function ProductDetailClient({
       </div>
 
       {/* Trust Badges */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-4 p-3 sm:p-4 bg-neutral-50 rounded-xl sm:rounded-2xl mb-6 sm:mb-8">
+      <div className="grid grid-cols-3 gap-2 sm:gap-4 p-3 sm:p-4 bg-neutral-50 border-2 border-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none mb-6 sm:mb-8">
         <div className="text-center">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto bg-white rounded-lg sm:rounded-xl flex items-center justify-center shadow-sm mb-1.5 sm:mb-2">
-            <Truck size={14} className="sm:w-[18px] sm:h-[18px] text-neutral-700" />
+          <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto bg-white border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none flex items-center justify-center mb-1.5 sm:mb-2">
+            <Truck size={14} className="sm:w-[18px] sm:h-[18px] text-neutral-750" />
           </div>
-          <p className="text-[9px] sm:text-[11px] font-medium text-neutral-600">Free Shipping</p>
-          <p className="text-[8px] sm:text-[10px] text-neutral-400 hidden xs:block">Over PKR 5,000</p>
+          <p className="text-[9px] sm:text-[11px] font-bold text-neutral-900">Free Shipping</p>
+          <p className="text-[8px] sm:text-[10px] text-neutral-500 hidden xs:block">Over PKR 5,000</p>
         </div>
         <div className="text-center">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto bg-white rounded-lg sm:rounded-xl flex items-center justify-center shadow-sm mb-1.5 sm:mb-2">
-            <RotateCcw size={14} className="sm:w-[18px] sm:h-[18px] text-neutral-700" />
+          <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto bg-white border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none flex items-center justify-center mb-1.5 sm:mb-2">
+            <RotateCcw size={14} className="sm:w-[18px] sm:h-[18px] text-neutral-750" />
           </div>
-          <p className="text-[9px] sm:text-[11px] font-medium text-neutral-600">Easy Returns</p>
-          <p className="text-[8px] sm:text-[10px] text-neutral-400 hidden xs:block">{settings?.returnPolicyDays || 30} Days</p>
+          <p className="text-[9px] sm:text-[11px] font-bold text-neutral-900">Easy Returns</p>
+          <p className="text-[8px] sm:text-[10px] text-neutral-500 hidden xs:block">{settings?.returnPolicyDays || 30} Days</p>
         </div>
         <div className="text-center">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto bg-white rounded-lg sm:rounded-xl flex items-center justify-center shadow-sm mb-1.5 sm:mb-2">
-            <ShieldCheck size={14} className="sm:w-[18px] sm:h-[18px] text-neutral-700" />
+          <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto bg-white border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none flex items-center justify-center mb-1.5 sm:mb-2">
+            <ShieldCheck size={14} className="sm:w-[18px] sm:h-[18px] text-neutral-750" />
           </div>
-          <p className="text-[9px] sm:text-[11px] font-medium text-neutral-600">Secure Payment</p>
-          <p className="text-[8px] sm:text-[10px] text-neutral-400 hidden xs:block">100% Protected</p>
+          <p className="text-[9px] sm:text-[11px] font-bold text-neutral-900">Secure Payment</p>
+          <p className="text-[8px] sm:text-[10px] text-neutral-500 hidden xs:block">100% Protected</p>
         </div>
       </div>
 
@@ -489,7 +489,7 @@ export function ProductDetailClient({
 
       {/* Verified Buyer Review Button */}
       {canReview && (
-        <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-amber-50 border border-amber-200 rounded-xl sm:rounded-2xl flex flex-col xs:flex-row items-start xs:items-center justify-between gap-3 sm:gap-4">
+        <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-amber-50 border-2 border-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none flex flex-col xs:flex-row items-start xs:items-center justify-between gap-3 sm:gap-4">
           <div>
             <p className="text-xs sm:text-sm font-semibold text-amber-900">You purchased this product</p>
             <p className="text-[10px] sm:text-xs text-amber-700 mt-0.5">
@@ -497,7 +497,7 @@ export function ProductDetailClient({
             </p>
           </div>
           {hasReviewed ? (
-            <div className="flex items-center gap-1.5 px-4 py-2 bg-green-100 text-green-700 rounded-xl text-xs font-semibold">
+            <div className="flex items-center gap-1.5 px-4 py-2 bg-green-100 text-green-700 border-2 border-green-700 rounded-none text-xs font-bold shadow-[2px_2px_0px_0px_rgba(21,128,61,0.8)]">
               <Check size={14} />
               Reviewed
             </div>
@@ -505,7 +505,7 @@ export function ProductDetailClient({
             <Button
               onClick={() => setReviewModalOpen(true)}
               size="sm"
-              className="rounded-xl"
+              className="rounded-none border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
             >
               <Star size={14} className="fill-current" />
               Write Review

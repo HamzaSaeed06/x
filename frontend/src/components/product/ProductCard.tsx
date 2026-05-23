@@ -84,9 +84,9 @@ export function ProductCard({ product, variant = 'default' }: ProductCardProps) 
     <>
       <Link href={`/products/${product.slug}`}>
         <motion.article
-          className="group relative flex flex-col bg-white rounded-lg sm:rounded-xl lg:rounded-2xl overflow-hidden border border-neutral-100 hover:border-neutral-300 transition-all duration-300 product-card-hover h-full shadow-sm hover:shadow-lg"
-          whileHover={{ y: -6 }}
-          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+          className="group relative flex flex-col bg-white overflow-hidden border-2 border-neutral-900 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 product-card-hover h-full shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+          whileHover={{ x: -2, y: -2 }}
+          transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
         >
           {/* Image Container */}
           <div className="relative aspect-[3/4] overflow-hidden bg-neutral-50">
@@ -119,17 +119,17 @@ export function ProductCard({ product, variant = 'default' }: ProductCardProps) 
             {/* Badges Container - Top Left */}
             <div className="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1.5 sm:gap-2 z-10">
               {isFlashSale && discount > 0 && (
-                <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-neutral-900 text-white text-[9px] sm:text-[10px] font-bold tracking-wide rounded-md sm:rounded-lg shadow-lg">
+                <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-neutral-900 text-white text-[9px] sm:text-[10px] font-bold tracking-wide border border-neutral-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                   -{Math.round(discount)}%
                 </span>
               )}
               {product.stock === 0 && (
-                <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-red-500 text-white text-[9px] sm:text-[10px] font-bold rounded-md sm:rounded-lg">
+                <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-red-500 text-white text-[9px] sm:text-[10px] font-bold border border-red-700 shadow-[2px_2px_0px_0px_rgba(153,27,27,0.8)]">
                   Sold Out
                 </span>
               )}
               {product.stock > 0 && product.stock <= 5 && (
-                <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-amber-500 text-white text-[9px] sm:text-[10px] font-bold rounded-md sm:rounded-lg">
+                <span className="px-2 sm:px-2.5 py-0.5 sm:py-1 bg-amber-500 text-white text-[9px] sm:text-[10px] font-bold border border-amber-700 shadow-[2px_2px_0px_0px_rgba(120,80,0,0.6)]">
                   Low Stock
                 </span>
               )}
@@ -138,10 +138,10 @@ export function ProductCard({ product, variant = 'default' }: ProductCardProps) 
             {/* Wishlist Button - Top Right */}
             <motion.button
               onClick={handleWishlist}
-              className={`absolute top-2 sm:top-3 right-2 sm:right-3 z-10 w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 flex items-center justify-center rounded-full shadow-md transition-all duration-300 ${
+              className={`absolute top-2 sm:top-3 right-2 sm:right-3 z-10 w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] border-2 transition-all duration-200 ${
                 wishlisted 
-                  ? 'bg-red-50 text-red-500 border border-red-100' 
-                  : 'bg-white/90 backdrop-blur-sm text-neutral-400 hover:text-red-500 border border-neutral-100'
+                  ? 'bg-neutral-900 text-white border-neutral-900' 
+                  : 'bg-white text-neutral-400 hover:text-neutral-900 border-neutral-900 hover:bg-neutral-100'
               }`}
               whileTap={{ scale: 0.9 }}
               aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
@@ -157,10 +157,10 @@ export function ProductCard({ product, variant = 'default' }: ProductCardProps) 
               <motion.button
                 onClick={handleAddToCart}
                 disabled={product.stock === 0 || isLoading}
-                className={`flex-1 h-9 sm:h-10 lg:h-11 flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl font-semibold text-[10px] sm:text-xs tracking-wide shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                className={`flex-1 h-9 sm:h-10 lg:h-11 flex items-center justify-center gap-1.5 sm:gap-2 font-bold text-[10px] sm:text-xs tracking-wide border-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
                   isAdded 
-                    ? 'bg-green-500 text-white' 
-                    : 'bg-neutral-900 text-white hover:bg-neutral-800'
+                    ? 'bg-green-500 text-white border-green-700 shadow-[2px_2px_0px_0px_rgba(20,100,20,1)]' 
+                    : 'bg-neutral-900 text-white border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:bg-neutral-800 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]'
                 }`}
                 whileTap={{ scale: 0.98 }}
               >
@@ -181,7 +181,7 @@ export function ProductCard({ product, variant = 'default' }: ProductCardProps) 
               </motion.button>
               <motion.button
                 onClick={handleQuickView}
-                className="w-9 h-9 sm:w-10 sm:h-10 lg:w-11 lg:h-11 flex items-center justify-center bg-white text-neutral-700 rounded-lg sm:rounded-xl shadow-lg border border-neutral-100 hover:bg-neutral-50 transition-all hidden sm:flex"
+              className="w-9 h-9 sm:w-10 sm:h-10 lg:w-11 lg:h-11 flex items-center justify-center bg-white text-neutral-700 border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:bg-neutral-100 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hidden sm:flex"
                 whileTap={{ scale: 0.95 }}
                 aria-label="Quick view"
               >
@@ -194,10 +194,10 @@ export function ProductCard({ product, variant = 'default' }: ProductCardProps) 
               <motion.button
                 onClick={handleAddToCart}
                 disabled={product.stock === 0 || isLoading}
-                className={`w-full h-8 flex items-center justify-center gap-1.5 rounded-lg font-semibold text-[10px] tracking-wide shadow-md transition-all disabled:opacity-50 ${
+                className={`w-full h-8 flex items-center justify-center gap-1.5 font-bold text-[10px] tracking-wide border-2 transition-all disabled:opacity-50 ${
                   isAdded 
-                    ? 'bg-green-500 text-white' 
-                    : 'bg-neutral-900/90 backdrop-blur-sm text-white'
+                    ? 'bg-green-500 text-white border-green-700' 
+                    : 'bg-neutral-900 border-neutral-900 text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'
                 }`}
                 whileTap={{ scale: 0.98 }}
               >

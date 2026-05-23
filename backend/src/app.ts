@@ -1,6 +1,7 @@
 import express, { type Express } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
+import cookieParser from "cookie-parser";
 import { logger } from "./lib/logger.js";
 import { connectDB } from "./lib/mongoose.js";
 
@@ -44,6 +45,7 @@ app.use("/api/payments/stripe/webhook", express.raw({ type: "application/json" }
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+app.use(cookieParser());
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 app.use("/api", healthRouter);

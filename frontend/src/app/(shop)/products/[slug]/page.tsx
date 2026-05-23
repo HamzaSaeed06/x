@@ -72,14 +72,14 @@ export default async function ProductDetailPage({
 
       {/* Related Products Section */}
       {related.length > 0 && (
-        <section className="mb-24">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-xl font-bold text-black tracking-tight">
-              Related Product
+        <section className="mb-16 sm:mb-20 lg:mb-24">
+          <div className="flex items-center justify-between mb-6 sm:mb-8 pb-4 sm:pb-5 border-b-2 border-neutral-900">
+            <h2 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">
+              Related Products
             </h2>
-            <Link href="/products" className="text-sm font-bold underline">View All</Link>
+            <Link href="/products" className="text-xs sm:text-sm font-bold border-2 border-neutral-900 px-3 sm:px-4 py-1.5 sm:py-2 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all bg-white">View All</Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6">
             {related.slice(0, 5).map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
@@ -88,9 +88,9 @@ export default async function ProductDetailPage({
       )}
 
       {/* Reviews Section - Dynamic */}
-      <section id="reviews" className="mb-24 border-t pt-16">
-        <div className="flex items-center justify-between mb-12">
-           <h2 className="text-xl font-bold text-black tracking-tight">Product Reviews</h2>
+      <section id="reviews" className="mb-16 sm:mb-20 lg:mb-24 border-t-2 border-neutral-900 pt-10 sm:pt-14 lg:pt-16">
+        <div className="flex items-center justify-between mb-8 sm:mb-10 pb-4 sm:pb-5 border-b-2 border-neutral-900">
+           <h2 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">Product Reviews</h2>
         </div>
         <ProductReviews 
           productId={product.id} 
@@ -100,10 +100,10 @@ export default async function ProductDetailPage({
       </section>
 
       {/* Popular This Week Section - Dynamic */}
-      <section className="mb-12 border-t pt-16">
-        <div className="flex items-center justify-between mb-8">
-           <h2 className="text-xl font-bold text-black tracking-tight">Popular this week</h2>
-           <Link href="/products" className="text-sm font-bold underline">View All</Link>
+      <section className="mb-10 sm:mb-12 border-t-2 border-neutral-900 pt-10 sm:pt-14 lg:pt-16">
+        <div className="flex items-center justify-between mb-6 sm:mb-8 pb-4 sm:pb-5 border-b-2 border-neutral-900">
+           <h2 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">Popular This Week</h2>
+           <Link href="/products" className="text-xs sm:text-sm font-bold border-2 border-neutral-900 px-3 sm:px-4 py-1.5 sm:py-2 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all bg-white">View All</Link>
         </div>
         <PopularThisWeek />
       </section>

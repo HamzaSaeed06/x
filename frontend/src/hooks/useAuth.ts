@@ -7,12 +7,6 @@ export function useAuth() {
   const { setUser, setRole, setLoading } = useAuthStore();
 
   useEffect(() => {
-    const token = getToken();
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
     setLoading(true);
     getCurrentUser()
       .then((user) => {

@@ -184,10 +184,10 @@ export default function CheckoutPage() {
                 <button
                   key={id}
                   onClick={() => setPayment(id)}
-                  className={`flex flex-row xs:flex-col items-center xs:justify-center gap-2 sm:gap-2 p-3 sm:p-5 border text-left xs:text-center transition-all rounded-lg sm:rounded-xl ${
+                  className={`flex flex-row xs:flex-col items-center xs:justify-center gap-2 sm:gap-2 p-3 sm:p-5 border-2 border-neutral-900 text-left xs:text-center transition-all rounded-none shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] ${
                     payment === id
-                      ? 'border-neutral-900 bg-neutral-900 text-white'
-                      : 'border-neutral-200 bg-white text-neutral-600 hover:border-neutral-400'
+                      ? 'bg-neutral-900 text-white border-neutral-900 shadow-none hover:translate-x-0 hover:translate-y-0 active:translate-x-0 active:translate-y-0'
+                      : 'bg-white text-neutral-900 hover:bg-neutral-50'
                   }`}
                 >
                   <Icon size={18} className="sm:w-5 sm:h-5 flex-shrink-0" strokeWidth={1.5} />
@@ -196,7 +196,7 @@ export default function CheckoutPage() {
               ))}
             </div>
             {payment === 'card' && (
-              <p className="mt-3 sm:mt-4 text-[10px] sm:text-[12px] text-neutral-500 border border-neutral-200 rounded-lg sm:rounded-xl p-3 sm:p-4 bg-neutral-50">
+              <p className="mt-3 sm:mt-4 text-[10px] sm:text-[12px] text-neutral-900 border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] p-3 sm:p-4 bg-amber-50">
                 <Lock size={12} className="inline mr-1.5 mb-0.5" />
                 Secure card processing coming soon. Use COD for now.
               </p>
@@ -205,7 +205,7 @@ export default function CheckoutPage() {
         </div>
 
         {/* Right: Summary */}
-        <div className="border border-neutral-200 bg-white p-4 sm:p-6 h-fit lg:sticky lg:top-24 space-y-4 sm:space-y-5 rounded-xl sm:rounded-2xl">
+        <div className="border-2 border-neutral-900 bg-white p-4 sm:p-6 h-fit lg:sticky lg:top-24 space-y-4 sm:space-y-5 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] rounded-none">
           <h2 className="text-xs sm:text-[14px] font-bold">Order Summary</h2>
 
           {/* Items */}

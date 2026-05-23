@@ -51,8 +51,8 @@ export default function WishlistPage() {
       {items.length === 0 ? (
         /* Empty State */
         <div className="flex flex-col items-center justify-center py-24 text-center">
-          <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mb-6">
-            <Heart size={36} className="text-red-300" />
+          <div className="w-16 h-16 bg-white border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] rounded-none flex items-center justify-center mb-6">
+            <Heart size={36} className="text-red-500 fill-red-500" />
           </div>
           <h2 className="text-xl font-bold text-gray-800 mb-2">Your wishlist is empty</h2>
           <p className="text-[13px] text-gray-400 mb-8 max-w-xs">
@@ -60,7 +60,7 @@ export default function WishlistPage() {
           </p>
           <Link
             href="/products"
-            className="flex items-center gap-2 px-8 py-3 bg-black text-white text-[13px] font-bold rounded hover:bg-gray-900 transition-all"
+            className="flex items-center gap-2 px-8 py-3 bg-neutral-900 text-white text-[13px] font-bold border-2 border-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-neutral-800 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] rounded-none transition-all"
           >
             <ArrowLeft size={16} /> Browse Products
           </Link>
@@ -78,7 +78,7 @@ export default function WishlistPage() {
             return (
               <div
                 key={product.id}
-                className="group relative bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-md transition-all duration-300"
+                className="group relative bg-white border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all duration-200 rounded-none overflow-hidden h-full flex flex-col"
               >
                 {/* Remove Button */}
                 <button
@@ -86,7 +86,7 @@ export default function WishlistPage() {
                     removeItem(product.id);
                     toast.success('Removed from wishlist');
                   }}
-                  className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center bg-white/90 backdrop-blur-md rounded-full shadow-sm text-gray-400 hover:text-red-500 transition-all hover:scale-110"
+                  className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center bg-white border-2 border-neutral-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-neutral-900 hover:text-red-500 hover:bg-neutral-50 transition-all rounded-none active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
                   aria-label="Remove from wishlist"
                 >
                   <Trash2 size={14} />
@@ -95,7 +95,7 @@ export default function WishlistPage() {
                 {/* Flash Sale badge */}
                 {isFlashSale && discount > 0 && (
                   <div className="absolute top-3 left-3 z-10">
-                    <span className="px-2.5 py-1 bg-black text-white text-[10px] font-bold rounded shadow-sm">
+                    <span className="px-2.5 py-1 bg-neutral-900 border border-neutral-800 text-white text-[10px] font-bold rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                       -{Math.round(discount)}%
                     </span>
                   </div>
@@ -103,7 +103,7 @@ export default function WishlistPage() {
 
                 {/* Image */}
                 <Link href={`/products/${product.slug}`}>
-                  <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                  <div className="relative aspect-square bg-white border-b-2 border-neutral-900 overflow-hidden">
                     {image ? (
                       <img src={image}
                         alt={product.name}
@@ -151,7 +151,7 @@ export default function WishlistPage() {
                   <button
                     onClick={() => handleAddToCart(product)}
                     disabled={isOutOfStock}
-                    className="w-full py-2.5 bg-black text-white text-[12px] font-bold rounded flex items-center justify-center gap-2 hover:bg-gray-900 transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="w-full py-2.5 bg-neutral-900 text-white text-[12px] font-bold border-2 border-neutral-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:bg-neutral-800 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] rounded-none flex items-center justify-center gap-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     <ShoppingBag size={14} />
                     {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}

@@ -67,7 +67,7 @@ export default function OrderConfirmationClient() {
       </div>
 
       {/* Order Items */}
-      <div className="border border-[var(--border-default)] bg-white mb-6">
+      <div className="border-2 border-neutral-900 bg-white mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none">
         <div className="flex items-center gap-3 px-6 py-4 border-b border-[var(--border-default)]">
           <Package size={16} strokeWidth={1.5} />
           <h2 className="text-[13px] font-bold ">Items Ordered</h2>
@@ -86,7 +86,7 @@ export default function OrderConfirmationClient() {
       </div>
 
       {/* Delivery Address */}
-      <div className="border border-[var(--border-default)] bg-white mb-6">
+      <div className="border-2 border-neutral-900 bg-white mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none">
         <div className="flex items-center gap-3 px-6 py-4 border-b border-[var(--border-default)]">
           <MapPin size={16} strokeWidth={1.5} />
           <h2 className="text-[13px] font-bold ">Delivery Address</h2>
@@ -101,7 +101,7 @@ export default function OrderConfirmationClient() {
       </div>
 
       {/* Payment & Totals */}
-      <div className="border border-[var(--border-default)] bg-white mb-10">
+      <div className="border-2 border-neutral-900 bg-white mb-10 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-none">
         <div className="flex items-center gap-3 px-6 py-4 border-b border-[var(--border-default)]">
           <CreditCard size={16} strokeWidth={1.5} />
           <h2 className="text-[13px] font-bold ">Payment</h2>
@@ -128,13 +128,13 @@ export default function OrderConfirmationClient() {
       <div className="flex flex-col sm:flex-row gap-4">
         <Link
           href="/products"
-          className="flex-1 h-14 bg-black text-white text-[13px] font-bold hover:bg-black/90 transition-all flex items-center justify-center gap-2"
+          className="flex-1 h-14 bg-neutral-900 text-white text-[13px] font-bold border-2 border-neutral-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-neutral-800 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] rounded-none transition-all flex items-center justify-center gap-2"
         >
           Continue Shopping <ArrowRight size={14} />
         </Link>
         <Link
           href="/"
-          className="flex-1 h-14 border border-black text-black text-[13px] font-bold hover:bg-[var(--neutral-50)] transition-all flex items-center justify-center"
+          className="flex-1 h-14 border-2 border-neutral-900 bg-white text-neutral-900 text-[13px] font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-neutral-50 hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] rounded-none transition-all flex items-center justify-center"
         >
           Back to Home
         </Link>
