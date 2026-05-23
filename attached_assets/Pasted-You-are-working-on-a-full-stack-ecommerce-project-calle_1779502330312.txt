@@ -1,0 +1,810 @@
+You are working on a full-stack ecommerce project called "Zest" built with:
+- Frontend: React + Vite + TypeScript + TailwindCSS + Wouter (routing) + Zustand (state)
+- Backend: Express.js + TypeScript + MongoDB + Mongoose + Nodemailer + Cloudinary + Stripe
+- Auth: JWT-based custom auth + Google OAuth
+
+The project is at: /home/claude/z (or the repo root)
+
+────────────────────────────────────────────────────────────────
+PART 1 — CRITICAL BUG FIXES (fix these first, they are broken)
+────────────────────────────────────────────────────────────────
+
+BUG 1: ReviewModal.tsx — function signature mismatch
+FILE: frontend/src/components/reviews/ReviewModal.tsx
+
+The addReview function in reviewService.ts expects TWO arguments:
+  addReview(productId: string, payload: {...})
+
+But ReviewModal calls it with ONE object:
+  await addReview({ productId, userId, userName, rating, ... })  ← WRONG
+
+This means NO review ever submits successfully. Fix the call to:
+  await addReview(productId, {
+    rating: form.rating,
+    title: form.title.trim() || `${form.rating}-star review`,
+    body: form.body.trim(),
+    userName: user.displayName || 'Anonymous',
+    userAvatar: user.photoURL || '',
+    images: [],
+  });
+
+Also remove isVerifiedPurchase: true from this call — the backend should determine this server-side.
+
+────────────────────────────────────────────────────────────────
+
+BUG 2: Email system completely missing
+nodemailer is installed in package.json but there is NO mailer utility,
+NO transporter setup, NO sendEmail function anywhere in the backend.
+Orders are created but customers receive zero emails.
+
+CREATE this file: backend/src/lib/mailer.ts
+
+import nodemailer from 'nodemailer';
+import type { IOrder } from '../models/Order.js';
+
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  port: Number(process.env.SMTP_PORT) || 587,
+  secure: false,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
+
+function baseHtml(content: string): string {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head><meta charset="utf-8"><style>
+      body { font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background: #f5f5f5; }
+      .container { max-width: 600px; margin: 40px auto; background: white; border-radius: 8px; overflow: hidden; }
+      .header { background: #000; padding: 24px 32px; }
+      .header h1 { color: white; margin: 0; font-size: 22px; font-weight: 700; letter-spacing: 1px; }
+      .body { padding: 32px; }
+      .footer { padding: 20px 32px; background: #f5f5f5; text-align: center; font-size: 12px; color: #888; }
+      .btn { display: inline-block; padding: 12px 28px; background: #000; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; margin-top: 20px; }
+      table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+      th { text-align: left; font-size: 12px; color: #888; padding: 8px 0; border-bottom: 1px solid #eee; }
+      td { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+    </style></head>
+    <body><div class="container">
+      <div class="header"><h1>ZEST</h1></div>
+      <div class="body">${content}</div>
+      <div class="footer">© Zest Store Pakistan | If you did not place this order, please contact us immediately.</div>
+    </div></body></html>
+  `;
+}
+
+export async function sendOrderConfirmation(email: string, order: IOrder): Promise<void> {
+  const orderId = (order._id as any).toString().slice(0, 8).toUpperCase();
+  const items = (order as any).items as Array<{ name: string; qty: number; price: number }>;
+  const itemRows = items.map(i =>
+    `<tr><td>${i.name}</td><td style="text-align:right">×${i.qty}</td><td style="text-align:right">PKR ${(i.price * i.qty).toLocaleString()}</td></tr>`
+  ).join('');
+
+  const html = baseHtml(`
+    <h2 style="margin-top:0">Order Confirmed! 🎉</h2>
+    <p>Hi! Your order <strong>#${orderId}</strong> has been placed successfully.</p>
+    ${(order as any).paymentMethod === 'cod' ? '<p style="background:#fff3cd;padding:12px;border-radius:4px;font-size:13px">💵 <strong>Cash on Delivery:</strong> Please keep PKR ${(order as any).total?.toLocaleString()} ready at the time of delivery.</p>' : ''}
+    <table>
+      <thead><tr><th>Item</th><th style="text-align:right">Qty</th><th style="text-align:right">Total</th></tr></thead>
+      <tbody>${itemRows}</tbody>
+    </table>
+    <table>
+      <tr><td style="color:#888">Subtotal</td><td style="text-align:right">PKR ${(order as any).subtotal?.toLocaleString()}</td></tr>
+      <tr><td style="color:#888">Shipping</td><td style="text-align:right">PKR ${(order as any).shipping?.toLocaleString()}</td></tr>
+      ${(order as any).discount > 0 ? `<tr><td style="color:#888">Discount</td><td style="text-align:right;color:green">-PKR ${(order as any).discount?.toLocaleString()}</td></tr>` : ''}
+      <tr><td><strong>Total</strong></td><td style="text-align:right"><strong>PKR ${(order as any).total?.toLocaleString()}</strong></td></tr>
+    </table>
+    <p style="font-size:13px;color:#888">We'll send you another email when your order is shipped.</p>
+  `);
+
+  await transporter.sendMail({
+    from: `"Zest Store" <${process.env.SMTP_USER}>`,
+    to: email,
+    subject: `Order #${orderId} confirmed — Zest`,
+    html,
+  });
+}
+
+export async function sendShippingUpdate(email: string, order: IOrder, status: string): Promise<void> {
+  const orderId = (order._id as any).toString().slice(0, 8).toUpperCase();
+  const statusMessages: Record<string, { subject: string; title: string; body: string; emoji: string }> = {
+    confirmed: {
+      emoji: '✅',
+      subject: `Order #${orderId} confirmed`,
+      title: 'Your order is confirmed!',
+      body: 'Our team has confirmed your order and it is being prepared for dispatch.',
+    },
+    processing: {
+      emoji: '📦',
+      subject: `Order #${orderId} is being packed`,
+      title: 'Your order is being packed!',
+      body: 'Your items are being carefully packed and will be dispatched soon.',
+    },
+    shipped: {
+      emoji: '🚚',
+      subject: `Order #${orderId} is on the way!`,
+      title: 'Your order has been shipped!',
+      body: `Your order is on its way!${(order as any).trackingNumber ? ` Tracking number: <strong>${(order as any).trackingNumber}</strong> via ${(order as any).courier || 'courier'}.` : ''}`,
+    },
+    delivered: {
+      emoji: '🎉',
+      subject: `Order #${orderId} delivered — How did we do?`,
+      title: 'Your order has been delivered!',
+      body: `We hope you love your purchase! Please take a moment to share your experience.
+        <br><br>
+        <a href="${process.env.FRONTEND_URL}/account/orders/${(order._id as any).toString()}?review=1" class="btn">Leave a Review</a>`,
+    },
+    cancelled: {
+      emoji: '❌',
+      subject: `Order #${orderId} cancelled`,
+      title: 'Your order has been cancelled',
+      body: 'Your order has been cancelled. If this was a mistake, please contact our support.',
+    },
+  };
+
+  const msg = statusMessages[status];
+  if (!msg) return;
+
+  const html = baseHtml(`
+    <h2 style="margin-top:0">${msg.emoji} ${msg.title}</h2>
+    <p>Order <strong>#${orderId}</strong></p>
+    <p>${msg.body}</p>
+    <a href="${process.env.FRONTEND_URL}/account/orders/${(order._id as any).toString()}" class="btn">View Order</a>
+  `);
+
+  await transporter.sendMail({
+    from: `"Zest Store" <${process.env.SMTP_USER}>`,
+    to: email,
+    subject: `${msg.emoji} ${msg.subject}`,
+    html,
+  });
+}
+
+export async function sendPasswordResetEmail(email: string, resetToken: string): Promise<void> {
+  const resetUrl = `${process.env.FRONTEND_URL}/auth/reset-password?token=${resetToken}`;
+  const html = baseHtml(`
+    <h2 style="margin-top:0">Reset Your Password</h2>
+    <p>You requested a password reset for your Zest account.</p>
+    <p>Click the button below to reset your password. This link expires in 1 hour.</p>
+    <a href="${resetUrl}" class="btn">Reset Password</a>
+    <p style="margin-top:20px;font-size:12px;color:#888">If you didn't request this, ignore this email. Your password won't change.</p>
+  `);
+
+  await transporter.sendMail({
+    from: `"Zest Store" <${process.env.SMTP_USER}>`,
+    to: email,
+    subject: 'Reset your Zest password',
+    html,
+  });
+}
+
+────────────────────────────────────────────────────────────────
+
+Now UPDATE backend/src/routes/orders.ts
+
+After the Order.create() call in POST /api/orders, add email sending:
+
+import { sendOrderConfirmation } from '../lib/mailer.js';
+import { User } from '../models/User.js';
+
+// After: const order = await Order.create({...})
+// Add this:
+try {
+  const emailTo = resolvedUserId !== 'guest'
+    ? (await User.findById(resolvedUserId).lean())?.email
+    : guestEmail;
+  if (emailTo) {
+    sendOrderConfirmation(emailTo, order).catch(err =>
+      logger.warn({ err }, 'Order confirmation email failed')
+    );
+  }
+} catch {}
+
+────────────────────────────────────────────────────────────────
+
+Now UPDATE backend/src/routes/admin.ts
+
+In PATCH /orders/:id/status, after updating the order, add:
+
+import { sendShippingUpdate } from '../lib/mailer.js';
+import { User } from '../models/User.js';
+
+// After: const order = await Order.findByIdAndUpdate(...)
+// Add this:
+if (['confirmed','processing','shipped','delivered','cancelled'].includes(status)) {
+  try {
+    const emailTo = (order as any).userId !== 'guest'
+      ? (await User.findById((order as any).userId).lean())?.email
+      : (order as any).guestEmail;
+    if (emailTo && order) {
+      sendShippingUpdate(emailTo, order as any, status).catch(() => {});
+    }
+  } catch {}
+}
+
+────────────────────────────────────────────────────────────────
+
+Add to backend/.env (create if not exists):
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=youremail@gmail.com
+SMTP_PASS=your-gmail-app-password
+FRONTEND_URL=http://localhost:5173
+
+Note: For Gmail, go to Google Account → Security → 2-Step Verification → App Passwords → generate one.
+For production use Resend.com or SendGrid (free tiers available).
+
+────────────────────────────────────────────────────────────────
+
+BUG 3: Review gate not enforced — anyone can write a review
+────────────────────────────────────────────────────────────────
+
+STEP A: Update backend/src/routes/reviews.ts
+In POST /reviews/product/:productId, add server-side purchase verification:
+
+import { Order } from '../models/Order.js';
+
+// Replace: const review = await Review.create({ ..., isVerifiedPurchase: false })
+// With this check first:
+
+const purchasedOrder = await Order.findOne({
+  userId: req.user!.id,
+  status: 'delivered',
+  'items.productId': req.params.productId,
+}).lean();
+
+const isVerifiedPurchase = !!purchasedOrder;
+
+// Check if already reviewed
+const alreadyReviewed = await Review.findOne({
+  productId: req.params.productId,
+  userId: req.user!.id,
+});
+if (alreadyReviewed) {
+  res.status(409).json({ error: 'You have already reviewed this product' });
+  return;
+}
+
+const review = await Review.create({
+  productId: req.params.productId,
+  userId: req.user!.id,
+  userName: req.body.userName ?? 'Customer',
+  userAvatar: req.body.userAvatar,
+  rating,
+  title,
+  body,
+  images: images ?? [],
+  isVerifiedPurchase,   // ← server-determined, not client-supplied
+});
+
+Also add this efficient endpoint (replaces the slow client-side check):
+
+router.get('/check/:productId', requireAuth, async (req: AuthRequest, res) => {
+  const hasReviewed = !!(await Review.exists({
+    productId: req.params.productId,
+    userId: req.user!.id,
+  }));
+  const canReview = !!(await Order.exists({
+    userId: req.user!.id,
+    status: 'delivered',
+    'items.productId': req.params.productId,
+  }));
+  res.json({ hasReviewed, canReview });
+});
+
+Also fix the helpful vote endpoint:
+Add to Review model: unhelpful: { type: Number, default: 0 }
+
+Add this route:
+router.post('/:id/helpful', requireAuth, async (req: AuthRequest, res) => {
+  const { type } = req.body as { type: 'up' | 'down' };
+  if (!['up', 'down'].includes(type)) {
+    res.status(400).json({ error: 'type must be up or down' });
+    return;
+  }
+  const update = type === 'up'
+    ? { $inc: { helpful: 1 } }
+    : { $inc: { unhelpful: 1 } };
+  await Review.findByIdAndUpdate(req.params.id, update);
+  res.json({ ok: true });
+});
+
+────────────────────────────────────────────────────────────────
+
+STEP B: Update frontend/src/lib/services/reviewService.ts
+
+Replace hasUserReviewedProduct with:
+export const checkReviewEligibility = async (
+  productId: string
+): Promise<{ hasReviewed: boolean; canReview: boolean }> => {
+  try {
+    return await api.get(`/reviews/check/${productId}`);
+  } catch {
+    return { hasReviewed: false, canReview: false };
+  }
+};
+
+// Keep hasUserReviewedProduct as alias for backward compat:
+export const hasUserReviewedProduct = async (
+  _userId: string,
+  productId: string
+): Promise<boolean> => {
+  const { hasReviewed } = await checkReviewEligibility(productId);
+  return hasReviewed;
+};
+
+Update markReviewHelpful:
+export const markReviewHelpful = async (
+  reviewId: string,
+  type: 'up' | 'down' = 'up'
+): Promise<void> => {
+  await api.post(`/reviews/${reviewId}/helpful`, { type });
+};
+
+────────────────────────────────────────────────────────────────
+
+STEP C: Update frontend/src/components/product/reviews/ProductReviews.tsx
+
+Add canReview and userId as props:
+interface ProductReviewsProps {
+  productId: string;
+  initialRating?: number;
+  initialReviewCount?: number;
+  canReview?: boolean;       // ← add this
+  userId?: string | null;    // ← add this
+}
+
+In the "Write a Review" button area, replace the single button with:
+{canReview && !hasReviewed ? (
+  <button
+    onClick={() => setIsReviewModalOpen(true)}
+    className="px-5 py-2 bg-amber-400 text-black text-[12px] font-bold rounded-full hover:bg-amber-500 transition-colors flex items-center gap-1.5"
+  >
+    <Star size={14} fill="currentColor" /> Write a Review
+  </button>
+) : hasReviewed ? (
+  <span className="text-[12px] text-green-600 font-semibold flex items-center gap-1">
+    ✓ You reviewed this product
+  </span>
+) : userId ? (
+  <span className="text-[12px] text-gray-400">
+    Purchase this product to leave a review
+  </span>
+) : (
+  <a href="/auth/login" className="text-[12px] text-black font-semibold underline">
+    Sign in to review
+  </a>
+)}
+
+Also update the "empty state" Write a Review button with the same canReview check.
+
+Also fix the handleVote function to call the new endpoint:
+const handleVote = async (reviewId: string, type: 'up' | 'down') => {
+  // ... existing local state updates ...
+  try {
+    await markReviewHelpful(reviewId, type);
+  } catch {}
+};
+
+────────────────────────────────────────────────────────────────
+
+STEP D: Update frontend/src/app/(shop)/products/[slug]/ProductDetailClient.tsx
+
+Replace the current canReview check effect with:
+
+import { checkReviewEligibility } from '@/lib/services/reviewService';
+
+useEffect(() => {
+  if (!user) { setCanReview(false); setHasReviewed(false); return; }
+  let cancelled = false;
+  checkReviewEligibility(product.id).then(({ canReview, hasReviewed }) => {
+    if (!cancelled) {
+      setCanReview(canReview);
+      setHasReviewed(hasReviewed);
+    }
+  }).catch(() => {});
+  return () => { cancelled = true; };
+}, [user, product.id]);
+
+Pass canReview and user to ProductReviews:
+<ProductReviews
+  productId={product.id}
+  initialRating={product.rating}
+  initialReviewCount={product.reviewCount}
+  canReview={canReview && !hasReviewed}
+  userId={user?.uid || null}
+/>
+
+────────────────────────────────────────────────────────────────
+PART 2 — HIGH PRIORITY FIXES
+────────────────────────────────────────────────────────────────
+
+FIX 4: ProductGallery.tsx — remove `priority`, add proper loading attributes
+
+Search for all <img ... priority ... /> in ProductGallery.tsx
+Replace every instance:
+
+BEFORE: <img src={...} alt={...} priority className={...} />
+AFTER:  <img src={...} alt={...} fetchpriority="high" loading="eager" className={...} />
+
+For thumbnail images:
+BEFORE: <img src={item.url} alt={`View ${i + 1}`} className="..." />
+AFTER:  <img src={item.url} alt={`View ${i + 1}`} loading="lazy" decoding="async" className="..." />
+
+────────────────────────────────────────────────────────────────
+
+FIX 5: Add touch swipe to ProductGallery.tsx
+
+Add these refs and handlers at the top of the component:
+const touchStartX = useRef<number | null>(null);
+
+const handleTouchStart = (e: React.TouchEvent) => {
+  touchStartX.current = e.touches[0].clientX;
+};
+
+const handleTouchEnd = (e: React.TouchEvent) => {
+  if (touchStartX.current === null) return;
+  const diff = touchStartX.current - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 40) {
+    if (diff > 0) {
+      setActiveIndex(prev => (prev + 1) % items.length);
+    } else {
+      setActiveIndex(prev => (prev - 1 + items.length) % items.length);
+    }
+  }
+  touchStartX.current = null;
+};
+
+Add these handlers to the main image container div:
+onTouchStart={handleTouchStart}
+onTouchEnd={handleTouchEnd}
+
+Also add swipe indicator dots below the main image on mobile:
+<div className="flex justify-center gap-1.5 mt-2 md:hidden">
+  {items.map((_, i) => (
+    <button
+      key={i}
+      onClick={() => setActiveIndex(i)}
+      className={`rounded-full transition-all ${
+        activeIndex === i
+          ? 'w-4 h-1.5 bg-black'
+          : 'w-1.5 h-1.5 bg-gray-300'
+      }`}
+    />
+  ))}
+</div>
+
+────────────────────────────────────────────────────────────────
+
+FIX 6: Checkout — read shipping from store settings
+
+Update frontend/src/app/(shop)/checkout/page.tsx
+
+Import store settings:
+import { useStoreSettings } from '@/lib/services/storeSettingsService';
+
+Inside the component:
+const { settings } = useStoreSettings();
+const freeThreshold = settings?.freeDeliveryThreshold ?? 5000;
+const shippingRate = settings?.standardShippingCost ?? 299;
+
+Replace:
+const shipping = subtotal >= 5000 ? 0 : 299;
+With:
+const shipping = subtotal >= freeThreshold ? 0 : shippingRate;
+
+────────────────────────────────────────────────────────────────
+
+FIX 7: Add password reset backend endpoints
+
+Update backend/src/routes/auth.ts
+
+Add to User model in backend/src/models/User.ts:
+passwordResetToken: { type: String, select: false },
+passwordResetExpires: { type: Date },
+
+Add these routes to auth.ts:
+import crypto from 'crypto';
+import { sendPasswordResetEmail } from '../lib/mailer.js';
+
+// POST /api/auth/forgot-password
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body as { email: string };
+    if (!email) { res.status(400).json({ error: 'Email required' }); return; }
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+    // Always return success to prevent email enumeration
+    if (!user) { res.json({ ok: true }); return; }
+
+    const token = crypto.randomBytes(32).toString('hex');
+    const hashed = crypto.createHash('sha256').update(token).digest('hex');
+
+    await User.findByIdAndUpdate(user._id, {
+      passwordResetToken: hashed,
+      passwordResetExpires: new Date(Date.now() + 60 * 60 * 1000), // 1 hour
+    });
+
+    sendPasswordResetEmail(user.email, token).catch(() => {});
+    res.json({ ok: true });
+  } catch {
+    res.status(500).json({ error: 'Failed to process request' });
+  }
+});
+
+// POST /api/auth/reset-password
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { token, newPassword } = req.body as { token: string; newPassword: string };
+    if (!token || !newPassword) {
+      res.status(400).json({ error: 'Token and new password required' });
+      return;
+    }
+    if (newPassword.length < 8) {
+      res.status(400).json({ error: 'Password must be at least 8 characters' });
+      return;
+    }
+
+    const hashed = crypto.createHash('sha256').update(token).digest('hex');
+    const user = await User.findOne({
+      passwordResetToken: hashed,
+      passwordResetExpires: { $gt: new Date() },
+    }).select('+passwordResetToken');
+
+    if (!user) {
+      res.status(400).json({ error: 'Invalid or expired reset token' });
+      return;
+    }
+
+    user.password = newPassword;
+    user.passwordResetToken = undefined as any;
+    user.passwordResetExpires = undefined as any;
+    await user.save();
+
+    res.json({ ok: true, message: 'Password updated successfully' });
+  } catch {
+    res.status(500).json({ error: 'Failed to reset password' });
+  }
+});
+
+────────────────────────────────────────────────────────────────
+
+FIX 8: Add rate limiting to auth routes
+
+In backend/src/app.ts, add at the top:
+import rateLimit from 'express-rate-limit';
+
+npm install express-rate-limit
+npm install --save-dev @types/express-rate-limit
+
+Add before the routes section:
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 15,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many attempts, please try again in 15 minutes' },
+});
+
+app.use('/api/auth/login', authLimiter);
+app.use('/api/auth/forgot-password', authLimiter);
+app.use('/api/auth/signup', authLimiter);
+
+────────────────────────────────────────────────────────────────
+PART 3 — NEW FEATURES TO ADD
+────────────────────────────────────────────────────────────────
+
+FEATURE 1: Order Timeline Component
+CREATE: frontend/src/components/orders/OrderTimeline.tsx
+
+import { Check } from 'lucide-react';
+import type { Order } from '@/types';
+
+const STEPS: Array<{ key: Order['status']; label: string; icon: string }> = [
+  { key: 'pending',    label: 'Order Placed',  icon: '🛒' },
+  { key: 'confirmed',  label: 'Confirmed',     icon: '✅' },
+  { key: 'processing', label: 'Packing',       icon: '📦' },
+  { key: 'shipped',    label: 'Shipped',       icon: '🚚' },
+  { key: 'delivered',  label: 'Delivered',     icon: '🎉' },
+];
+
+export function OrderTimeline({ order }: { order: Order }) {
+  if (order.status === 'cancelled') {
+    return (
+      <div className="flex items-center gap-3 px-4 py-3 bg-red-50 border border-red-200 rounded-xl">
+        <span className="text-lg">❌</span>
+        <div>
+          <p className="text-[13px] font-bold text-red-700">Order Cancelled</p>
+          <p className="text-[11px] text-red-500">This order has been cancelled</p>
+        </div>
+      </div>
+    );
+  }
+
+  const currentIndex = STEPS.findIndex(s => s.key === order.status);
+
+  return (
+    <div className="relative">
+      <div className="flex items-start justify-between relative">
+        {/* Background line */}
+        <div className="absolute top-4 left-0 right-0 h-0.5 bg-gray-200 mx-8" />
+        {/* Active line */}
+        <div
+          className="absolute top-4 left-0 h-0.5 bg-black mx-8 transition-all duration-500"
+          style={{ width: currentIndex > 0 ? `${(currentIndex / (STEPS.length - 1)) * 100}%` : '0%' }}
+        />
+
+        {STEPS.map((step, i) => {
+          const isDone = i < currentIndex;
+          const isCurrent = i === currentIndex;
+          return (
+            <div key={step.key} className="flex flex-col items-center relative z-10" style={{ flex: 1 }}>
+              <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-[13px] transition-all
+                ${isDone ? 'bg-black border-black' : isCurrent ? 'bg-white border-black' : 'bg-white border-gray-200'}`}>
+                {isDone ? <Check size={14} className="text-white" strokeWidth={2.5} /> : step.icon}
+              </div>
+              <p className={`text-[10px] mt-2 text-center leading-tight
+                ${isCurrent ? 'font-bold text-black' : isDone ? 'text-gray-600' : 'text-gray-300'}`}>
+                {step.label}
+              </p>
+              {/* Timestamp from timeline */}
+              {order.timeline?.find(t => t.status === step.key) && (
+                <p className="text-[9px] text-gray-400 mt-0.5 text-center">
+                  {new Date(order.timeline.find(t => t.status === step.key)!.timestamp).toLocaleDateString('en-PK', { day: 'numeric', month: 'short' })}
+                </p>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+Use this in: frontend/src/app/(shop)/account/orders/[orderId]/page.tsx
+Import and render <OrderTimeline order={order} /> near the top of the order detail page.
+
+────────────────────────────────────────────────────────────────
+
+FEATURE 2: Loyalty Points display in Navbar and Checkout
+
+UPDATE frontend/src/components/layout/Navbar.tsx
+After the user avatar/name display, add:
+{user && user.loyaltyPoints > 0 && (
+  <span className="hidden sm:flex items-center gap-1 text-[11px] font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
+    ⭐ {user.loyaltyPoints} pts
+  </span>
+)}
+
+UPDATE frontend/src/app/(shop)/checkout/page.tsx
+Show points balance and option to redeem:
+{user && user.loyaltyPoints >= 100 && (
+  <div className="border border-amber-200 bg-amber-50 rounded-xl p-4 mt-4">
+    <div className="flex items-center justify-between">
+      <div>
+        <p className="text-[13px] font-bold text-amber-800">⭐ Use Loyalty Points</p>
+        <p className="text-[11px] text-amber-600">You have {user.loyaltyPoints} points = PKR {Math.floor(user.loyaltyPoints / 10)}</p>
+      </div>
+      <label className="flex items-center gap-2 cursor-pointer">
+        <input
+          type="checkbox"
+          checked={usePoints}
+          onChange={e => setUsePoints(e.target.checked)}
+          className="rounded"
+        />
+        <span className="text-[12px] font-semibold">Apply</span>
+      </label>
+    </div>
+  </div>
+)}
+
+Add state: const [usePoints, setUsePoints] = useState(false);
+And calculate:
+const pointsDiscount = usePoints ? Math.min(Math.floor(user.loyaltyPoints / 10), subtotal * 0.1) : 0;
+const grandTotal = subtotal + shipping - couponDiscount - pointsDiscount;
+
+────────────────────────────────────────────────────────────────
+
+FEATURE 3: Review photo upload in ReviewModal
+
+UPDATE frontend/src/components/reviews/ReviewModal.tsx
+
+Add image upload state:
+const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+const [uploadingImage, setUploadingImage] = useState(false);
+
+Add upload handler:
+const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const files = Array.from(e.target.files || []);
+  if (uploadedImages.length + files.length > 4) {
+    toast.error('Maximum 4 photos allowed');
+    return;
+  }
+  setUploadingImage(true);
+  try {
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.url) setUploadedImages(prev => [...prev, data.url]);
+    }
+  } catch {
+    toast.error('Image upload failed');
+  } finally {
+    setUploadingImage(false);
+  }
+};
+
+Add to the form JSX (before the Submit button):
+<div>
+  <label className="block text-[11px] font-bold text-gray-600 mb-2">Add Photos (optional, max 4)</label>
+  <div className="flex gap-2 flex-wrap">
+    {uploadedImages.map((url, i) => (
+      <div key={i} className="relative w-16 h-16 rounded-lg overflow-hidden border border-gray-200">
+        <img src={url} alt="" className="w-full h-full object-cover" />
+        <button
+          type="button"
+          onClick={() => setUploadedImages(prev => prev.filter((_, idx) => idx !== i))}
+          className="absolute top-0.5 right-0.5 w-4 h-4 bg-black/60 text-white rounded-full text-[10px] flex items-center justify-center"
+        >×</button>
+      </div>
+    ))}
+    {uploadedImages.length < 4 && (
+      <label className="w-16 h-16 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors">
+        {uploadingImage ? <span className="text-[10px] text-gray-400">...</span> : <span className="text-xl text-gray-300">+</span>}
+        <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
+      </label>
+    )}
+  </div>
+</div>
+
+Update the submit to include images:
+await addReview(productId, {
+  rating: form.rating,
+  title: form.title.trim(),
+  body: form.body.trim(),
+  userName: user.displayName || 'Anonymous',
+  userAvatar: user.photoURL || '',
+  images: uploadedImages,  // ← include uploaded images
+});
+
+────────────────────────────────────────────────────────────────
+
+AFTER ALL CHANGES: verify this checklist
+
+Backend:
+[ ] backend/src/lib/mailer.ts exists with transporter + sendOrderConfirmation + sendShippingUpdate + sendPasswordResetEmail
+[ ] POST /api/orders sends confirmation email after creation
+[ ] PATCH /api/admin/orders/:id/status sends status update email
+[ ] POST /api/auth/forgot-password works
+[ ] POST /api/auth/reset-password works
+[ ] POST /api/reviews/product/:id checks server-side purchase before allowing review
+[ ] GET /api/reviews/check/:productId endpoint exists
+[ ] POST /api/reviews/:id/helpful endpoint exists
+[ ] Rate limiting on auth routes
+[ ] SMTP env variables in .env
+
+Frontend:
+[ ] ReviewModal calls addReview(productId, payload) with TWO args
+[ ] ProductReviews receives canReview prop and hides button for non-buyers
+[ ] ProductDetailClient uses checkReviewEligibility instead of hasUserPurchasedProduct
+[ ] ProductGallery has no `priority` prop on img tags
+[ ] ProductGallery has touchStart/touchEnd for mobile swipe
+[ ] ProductGallery has swipe indicator dots on mobile
+[ ] Checkout reads shipping from store settings
+[ ] OrderTimeline component created and used in order detail page
+[ ] Loyalty points shown in Navbar
+
+Run: cd backend && npm run dev
+Run: cd frontend && npm run dev
+Test: place an order → check email → change status in admin → check email again
+Test: try submitting a review without purchasing → should be blocked
+Test: swipe images on mobile → should navigate

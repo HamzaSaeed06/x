@@ -1,0 +1,18 @@
+import { Navbar } from '@/components/layout/Navbar';
+import { Footer } from '@/components/layout/Footer';
+import { CartDrawer } from '@/components/cart/CartDrawer';
+import { ChatBot } from '@/components/shop/ChatBot';
+import { BackToTop } from '@/components/shop/BackToTop';
+
+export default function ShopLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="min-h-screen flex flex-col bg-[var(--bg-primary)]">
+      <Navbar />
+      <main className="flex-1">{children}</main>
+      <Footer />
+      <CartDrawer />
+      <ChatBot />
+      <BackToTop />
+    </div>
+  );
+}
