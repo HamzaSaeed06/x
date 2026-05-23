@@ -13,14 +13,5 @@
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
-  },
-  "dependencies": {
-    "@radix-ui/react-slot": "^1.2.4",
-    "class-variance-authority": "^0.7.1",
-    "framer-motion": "^12.40.0",
-    "lucide-react": "^1.16.0",
-    "react": "^19.2.6",
-    "react-hot-toast": "^2.6.0",
-    "wouter": "^3.10.0"
   }
 }

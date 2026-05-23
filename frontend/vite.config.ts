@@ -16,6 +16,10 @@ export default defineConfig({
     alias: {
       "@": path.resolve(import.meta.dirname, "src"),
     },
+    dedupe: ['react', 'react-dom', 'react/jsx-runtime'],
+  },
+  optimizeDeps: {
+    exclude: ['framer-motion'],
   },
   root: path.resolve(import.meta.dirname),
   build: {

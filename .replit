@@ -46,9 +46,14 @@ task = "shell.exec"
 args = "PORT=8000 npm run dev:backend"
 waitForPort = 8000
 
+[userenv]
+
+[userenv.shared]
+JWT_SECRET = "151d11f4010d1d44857530ca95b7a7aa80bd7b072ffa2148344cbd356961bdb106f01a5c7a6ac65d5222e713821b84535249eb00fa6bd367f851ed5cf5302ddf"
+
 [[ports]]
 localPort = 5000
-externalPort = 80
+externalPort = 5000
 
 [[ports]]
 localPort = 8000

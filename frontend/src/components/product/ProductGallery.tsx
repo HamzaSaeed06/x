@@ -140,7 +140,7 @@ export function ProductGallery({
           {items.length > 1 && (
             <div
               ref={thumbsRef}
-              className="hidden md:flex flex-col gap-2 sm:gap-3 flex-shrink-0 max-h-[400px] lg:max-h-[500px] xl:max-h-[600px] overflow-y-auto scrollbar-hide"
+              className="hidden md:flex flex-col gap-2 sm:gap-3 flex-shrink-0 max-h-[380px] lg:max-h-[480px] xl:max-h-[520px] overflow-y-auto scrollbar-hide"
             >
               {items.map((item, i) => (
                 <motion.button
@@ -175,7 +175,7 @@ export function ProductGallery({
           <div className="flex-1 min-w-0">
             <div
               ref={mainImageRef}
-              className={`relative w-full aspect-[4/5] sm:aspect-square rounded-none overflow-hidden bg-neutral-100 border-2 border-neutral-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] ${
+              className={`relative w-full aspect-[4/5] md:aspect-[4/5] lg:aspect-square max-h-[480px] sm:max-h-[520px] lg:max-h-[560px] xl:max-h-[600px] rounded-none overflow-hidden bg-neutral-100 border-2 border-neutral-900 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] ${
                 activeItem?.type === 'image' ? 'cursor-zoom-in' : ''
               }`}
               onClick={() => activeItem?.type === 'image' && openLightbox(activeIndex)}

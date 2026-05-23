@@ -172,25 +172,25 @@ const features = [
     icon: Truck,
     title: 'Free Delivery',
     desc: 'On orders over PKR 5,000',
-    color: 'bg-blue-50 text-blue-600',
+    color: 'bg-neutral-900 text-white',
   },
   {
     icon: RotateCcw,
     title: 'Easy Returns',
     desc: '30-day hassle-free returns',
-    color: 'bg-green-50 text-green-600',
+    color: 'bg-neutral-100 text-neutral-800',
   },
   {
     icon: Shield,
     title: 'Secure Payment',
     desc: 'Multiple payment options',
-    color: 'bg-orange-50 text-orange-600',
+    color: 'bg-neutral-800 text-white',
   },
   {
     icon: CreditCard,
     title: 'Premium Quality',
     desc: 'Curated with care',
-    color: 'bg-purple-50 text-purple-600',
+    color: 'bg-neutral-200 text-neutral-800',
   },
 ];
 
