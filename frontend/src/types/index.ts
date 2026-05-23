@@ -281,6 +281,7 @@ export interface StoreSettings {
   flashSaleBannerTitle: string;
   flashSaleBannerSubtitle: string;
   flashSaleBannerActive: boolean;
+  flashSaleEndsAt?: string;
   // Social Media
   socialFacebook?: string;
   socialInstagram?: string;

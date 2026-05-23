@@ -27,6 +27,7 @@ export const DEFAULT_SETTINGS: StoreSettings = {
   flashSaleBannerTitle: 'Flash Sale: Up to 70% Off',
   flashSaleBannerSubtitle: 'Grab these deals before they are gone!',
   flashSaleBannerActive: true,
+  flashSaleEndsAt: '',
   socialFacebook: '',
   socialInstagram: '',
   socialTwitter: '',

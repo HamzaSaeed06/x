@@ -405,6 +405,19 @@ export default function AdminSettingsPage() {
               <input type="text" className={inputCls} value={settings.flashSaleBannerSubtitle}
                 onChange={e => update('flashSaleBannerSubtitle', e.target.value)} />
             </Field>
+            <Field label="Sale End Date & Time" hint="The countdown timer on the homepage counts down to this exact moment. Leave blank to use end-of-day.">
+              <input
+                type="datetime-local"
+                className={inputCls}
+                value={settings.flashSaleEndsAt ? settings.flashSaleEndsAt.slice(0, 16) : ''}
+                onChange={e => update('flashSaleEndsAt', e.target.value ? new Date(e.target.value).toISOString() : '')}
+              />
+              {settings.flashSaleEndsAt && new Date(settings.flashSaleEndsAt) < new Date() && (
+                <p className="text-[11px] text-[var(--admin-danger)] mt-1 font-medium flex items-center gap-1">
+                  <Calendar size={11} /> This date has already passed — the countdown will show "Sale ended".
+                </p>
+              )}
+            </Field>
             <Toggle
               value={settings.flashSaleBannerActive}
               onChange={v => update('flashSaleBannerActive', v)}

@@ -96,7 +96,7 @@ export function HeroBannerCarousel({ banners }: HeroBannerCarouselProps) {
 
   return (
     <section 
-      className="relative min-h-[420px] h-[52vh] sm:h-[580px] lg:h-[680px] xl:h-[720px] overflow-hidden bg-neutral-950"
+      className="relative min-h-[320px] h-[44vh] sm:h-[460px] lg:h-[520px] overflow-hidden bg-neutral-950"
       onMouseEnter={() => setIsAutoPlaying(false)}
       onMouseLeave={() => setIsAutoPlaying(true)}
     >

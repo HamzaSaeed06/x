@@ -58,6 +58,9 @@ export function ProductForm({ initialData, onSuccess }: ProductFormProps = {}) {
     isFeatured: initialData?.isFeatured ?? false,
     isFlashSale: initialData?.isFlashSale ?? false,
     flashSalePrice: initialData?.flashSalePrice || 0,
+    flashSaleEndsAt: initialData?.flashSaleEndsAt
+      ? new Date(initialData.flashSaleEndsAt).toISOString().slice(0, 16)
+      : '',
   });
 
   const [attributes, setAttributes] = useState<ProductAttribute[]>(initialData?.attributes || []);
@@ -396,6 +399,9 @@ export function ProductForm({ initialData, onSuccess }: ProductFormProps = {}) {
         flashSalePrice: basicInfo.isFlashSale && basicInfo.flashSalePrice > 0
           ? basicInfo.flashSalePrice
           : undefined,
+        flashSaleEndsAt: basicInfo.isFlashSale && basicInfo.flashSaleEndsAt
+          ? new Date(basicInfo.flashSaleEndsAt)
+          : undefined,
         lowStockThreshold: 5,
         sold: initialData?.sold ?? 0,
         views: initialData?.views ?? 0,
@@ -627,15 +633,27 @@ export function ProductForm({ initialData, onSuccess }: ProductFormProps = {}) {
             </label>
           </div>
           {basicInfo.isFlashSale && (
-            <div className="space-y-1.5 max-w-xs">
-              <label className="text-[12px] font-semibold text-[var(--admin-text-secondary)]">Flash Sale Price (PKR)</label>
-              <input
-                type="number"
-                min="0"
-                className={inputClass}
-                value={basicInfo.flashSalePrice || ''}
-                onChange={(e) => setBasicInfo({ ...basicInfo, flashSalePrice: Number(e.target.value) })}
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg">
+              <div className="space-y-1.5">
+                <label className="text-[12px] font-semibold text-[var(--admin-text-secondary)]">Flash Sale Price (PKR)</label>
+                <input
+                  type="number"
+                  min="0"
+                  className={inputClass}
+                  value={basicInfo.flashSalePrice || ''}
+                  onChange={(e) => setBasicInfo({ ...basicInfo, flashSalePrice: Number(e.target.value) })}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[12px] font-semibold text-[var(--admin-text-secondary)]">Sale Ends At (optional)</label>
+                <input
+                  type="datetime-local"
+                  className={inputClass}
+                  value={basicInfo.flashSaleEndsAt || ''}
+                  onChange={(e) => setBasicInfo({ ...basicInfo, flashSaleEndsAt: e.target.value })}
+                />
+                <p className="text-[10px] text-[var(--admin-text-muted)]">Leave blank for no expiry</p>
+              </div>
             </div>
           )}
         </div>

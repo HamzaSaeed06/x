@@ -22,6 +22,7 @@ import {
   getFeaturedProducts,
   getTrendingProducts,
   getNewArrivals,
+  getFlashSaleProducts,
 } from '@/lib/services/productService';
 import { getStoreSettings } from '@/lib/services/storeSettingsService';
 import type { Product, StoreSettings } from '@/types';
@@ -198,6 +199,7 @@ export default function HomePage() {
   const [trending, setTrending] = useState<Product[]>([]);
   const [featured, setFeatured] = useState<Product[]>([]);
   const [newArrivals, setNewArrivals] = useState<Product[]>([]);
+  const [flashSaleProducts, setFlashSaleProducts] = useState<Product[]>([]);
   const [settings, setSettings] = useState<StoreSettings | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -207,12 +209,14 @@ export default function HomePage() {
       getFeaturedProducts(4),
       getNewArrivals(4),
       getStoreSettings(),
+      getFlashSaleProducts(8),
     ])
-      .then(([t, f, n, s]) => {
+      .then(([t, f, n, s, fs]) => {
         setTrending(t);
         setFeatured(f);
         setNewArrivals(n);
         setSettings(s);
+        setFlashSaleProducts(fs);
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -300,36 +304,84 @@ export default function HomePage() {
 
         {/* Flash Sale */}
         {settings?.flashSaleBannerActive && (
-          <section className="bg-neutral-950 py-10 sm:py-14 md:py-16 lg:py-20 border-2 border-neutral-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
-                <div>
-                  <span className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 bg-white/10 text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider rounded-full mb-2 sm:mb-3">
-                    <Zap size={10} className="sm:w-3 sm:h-3 text-amber-400" />
-                    Limited Time
-                  </span>
-                  <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white tracking-tight">
-                    {settings.flashSaleBannerTitle ?? 'Flash Sale'}
-                  </h2>
-                  {settings.flashSaleBannerSubtitle && (
-                    <p className="text-white/60 text-xs sm:text-sm mt-1 sm:mt-2">
-                      {settings.flashSaleBannerSubtitle}
-                    </p>
-                  )}
-                </div>
-                <Button
-                  asChild
-                  size="sm"
-                  className="bg-white text-neutral-900 hover:bg-neutral-100 self-start sm:self-auto h-9 sm:h-10 text-xs sm:text-sm rounded-none border-2 border-white shadow-[3px_3px_0px_0px_rgba(255,255,255,0.4)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.4)] transition-all"
-                >
-                  <Link href="/products?sort=flash-sale">
-                    Shop All Deals
-                    <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-1.5 sm:ml-2" />
-                  </Link>
-                </Button>
+          <section className="bg-neutral-950 py-10 sm:py-14 md:py-16 border-2 border-neutral-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+            {/* Header row */}
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 sm:gap-6 mb-6 sm:mb-8">
+              <div>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-400/20 border border-amber-400/40 text-amber-400 text-[10px] font-bold uppercase tracking-widest mb-3">
+                  <Zap size={10} className="fill-amber-400" />
+                  Limited Time Offer
+                </span>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
+                  {settings.flashSaleBannerTitle ?? 'Flash Sale'}
+                </h2>
+                {settings.flashSaleBannerSubtitle && (
+                  <p className="text-white/50 text-sm mt-2">
+                    {settings.flashSaleBannerSubtitle}
+                  </p>
+                )}
+                <FlashSaleCountdown endDate={settings.flashSaleEndsAt} />
               </div>
-              <FlashSaleCountdown />
+              <Button
+                asChild
+                size="sm"
+                className="bg-amber-400 text-neutral-900 hover:bg-amber-300 self-start sm:self-center h-10 px-5 text-xs font-bold rounded-none border-2 border-amber-400 shadow-[3px_3px_0px_0px_rgba(251,191,36,0.5)] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(251,191,36,0.5)] transition-all flex-shrink-0"
+              >
+                <Link href="/products?sort=flash-sale">
+                  Shop All Deals
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              </Button>
             </div>
+
+            {/* Divider */}
+            <div className="border-t border-white/10 mb-6 sm:mb-8" />
+
+            {/* Flash sale products grid */}
+            {flashSaleProducts.length > 0 ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 sm:gap-4">
+                {flashSaleProducts.slice(0, 8).map((product) => (
+                  <Link key={product.id} href={`/products/${product.slug}`}>
+                    <div className="group bg-white/5 border border-white/10 hover:border-amber-400/50 hover:bg-white/10 transition-all duration-200 overflow-hidden">
+                      <div className="relative aspect-square overflow-hidden bg-neutral-800">
+                        <img
+                          src={product.images[0] ?? ''}
+                          alt={product.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                        {product.flashSalePrice && product.price && (
+                          <div className="absolute top-2 left-2 bg-amber-400 text-neutral-900 text-[10px] font-black px-2 py-0.5">
+                            -{Math.round(((product.price - product.flashSalePrice) / product.price) * 100)}%
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-2.5 sm:p-3">
+                        <p className="text-white/80 text-[11px] sm:text-xs font-semibold line-clamp-2 leading-snug mb-1.5">
+                          {product.name}
+                        </p>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-amber-400 font-black text-sm sm:text-base">
+                            PKR {(product.flashSalePrice ?? product.price).toLocaleString()}
+                          </span>
+                          {product.flashSalePrice && (
+                            <span className="text-white/30 text-[11px] line-through">
+                              PKR {product.price.toLocaleString()}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-10 border border-white/10">
+                <Zap size={32} className="text-amber-400/40 mx-auto mb-3" />
+                <p className="text-white/40 text-sm">Flash sale products will appear here.</p>
+                <p className="text-white/25 text-xs mt-1">Mark products as flash sale in the admin panel.</p>
+              </div>
+            )}
           </section>
         )}
 
