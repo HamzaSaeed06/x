@@ -1,52 +1,56 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   DESIGN SYSTEM — LUXURY PREMIUM E-COMMERCE
-   Sophisticated, modern, high-end marketplace aesthetic
+   DESIGN SYSTEM — MODERN PREMIUM E-COMMERCE
+   Production-grade, sophisticated, modern marketplace aesthetic
    ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ─── Primary Brand Colors (Luxury Palette) ──────────────────────────────── */
-  --color-primary: hsl(0, 0%, 9%);           /* Deep charcoal */
-  --color-primary-light: hsl(0, 0%, 18%);    /* Medium charcoal */
-  --color-primary-lighter: hsl(0, 0%, 28%);  /* Light charcoal */
-  --color-primary-50: hsl(0, 0%, 97%);       /* Almost white */
-  
-  /* ─── Accent Colors (Sophisticated) ─────────────────────────────────────── */
-  --color-accent: hsl(38, 92%, 50%);         /* Gold */
-  --color-accent-light: hsl(38, 100%, 95%);  /* Gold tint */
-  --color-accent-dark: hsl(38, 92%, 40%);    /* Deep gold */
-  
-  /* ─── Secondary Colors ────────────────────────────────────────────────────── */
-  --color-secondary: hsl(203, 89%, 53%);     /* Premium blue */
-  --color-secondary-light: hsl(203, 89%, 95%); /* Blue tint */
-  
-  /* ─── Neutral Scale (Cool Gray) ───────────────────────────────────────────── */
-  --color-neutral-0: hsl(0, 0%, 100%);       /* Pure white */
-  --color-neutral-50: hsl(240, 10%, 97%);    /* Off white */
-  --color-neutral-100: hsl(240, 5%, 95%);    /* Very light gray */
-  --color-neutral-150: hsl(0, 0%, 92%);      /* Light gray */
-  --color-neutral-200: hsl(0, 0%, 89%);      /* Light-medium gray */
-  --color-neutral-300: hsl(0, 0%, 82%);      /* Medium-light gray */
-  --color-neutral-400: hsl(0, 0%, 70%);      /* Medium gray */
-  --color-neutral-500: hsl(0, 0%, 60%);      /* Medium-dark gray */
-  --color-neutral-600: hsl(0, 0%, 48%);      /* Dark gray */
-  --color-neutral-700: hsl(0, 0%, 35%);      /* Very dark gray */
-  --color-neutral-800: hsl(0, 0%, 22%);      /* Almost black */
-  --color-neutral-900: hsl(0, 0%, 13%);      /* Nearly black */
-  --color-neutral-950: hsl(0, 0%, 9%);       /* Deep black */
-  
-  /* ─── Semantic Colors ──────────────────────────────────────────────────────── */
-  --color-success: hsl(142, 72%, 29%);       /* Premium green */
-  --color-success-light: hsl(142, 76%, 36%);
-  --color-success-bg: hsl(142, 76%, 92%);    /* Green tint */
-  
-  --color-warning: hsl(38, 92%, 50%);        /* Gold warning */
+  /* ─── Primary Brand Colors (Modern Luxury) ────────────────────────────────── */
+  --color-primary: hsl(0, 0%, 8%);            /* Deep charcoal */
+  --color-primary-light: hsl(0, 0%, 16%);     /* Medium charcoal */
+  --color-primary-lighter: hsl(0, 0%, 24%);   /* Light charcoal */
+  --color-primary-50: hsl(0, 0%, 98%);        /* Almost white */
+
+  /* ─── Accent Colors (Modern Gradient-Ready) ───────────────────────────────── */
+  --color-accent: hsl(12, 100%, 55%);         /* Vibrant coral-red */
+  --color-accent-light: hsl(12, 100%, 96%);   /* Coral tint */
+  --color-accent-dark: hsl(12, 100%, 45%);    /* Deep coral */
+
+  /* ─── Secondary Colors (Teal - Modern) ────────────────────────────────────── */
+  --color-secondary: hsl(170, 76%, 48%);      /* Vibrant teal */
+  --color-secondary-light: hsl(170, 76%, 95%);/* Teal tint */
+
+  /* ─── Tertiary Color (Purple - Modern Accent) ───────────────────────────────── */
+  --color-tertiary: hsl(270, 100%, 58%);      /* Vibrant purple */
+  --color-tertiary-light: hsl(270, 100%, 95%);/* Purple tint */
+
+  /* ─── Neutral Scale (Professional Cool Gray) ──────────────────────────────── */
+  --color-neutral-0: hsl(0, 0%, 100%);        /* Pure white */
+  --color-neutral-50: hsl(210, 40%, 98%);     /* Off white */
+  --color-neutral-100: hsl(210, 16%, 96%);    /* Very light gray */
+  --color-neutral-150: hsl(210, 14%, 92%);    /* Light gray */
+  --color-neutral-200: hsl(210, 10%, 87%);    /* Light-medium gray */
+  --color-neutral-300: hsl(210, 8%, 80%);     /* Medium-light gray */
+  --color-neutral-400: hsl(210, 7%, 70%);     /* Medium gray */
+  --color-neutral-500: hsl(210, 6%, 60%);     /* Medium-dark gray */
+  --color-neutral-600: hsl(210, 5%, 48%);     /* Dark gray */
+  --color-neutral-700: hsl(210, 4%, 35%);     /* Very dark gray */
+  --color-neutral-800: hsl(210, 3%, 22%);     /* Almost black */
+  --color-neutral-900: hsl(210, 2%, 13%);     /* Nearly black */
+  --color-neutral-950: hsl(210, 1%, 8%);      /* Deep black */
+
+  /* ─── Semantic Colors (Modern Palette) ──────────────────────────────────────── */
+  --color-success: hsl(142, 71%, 45%);        /* Fresh green */
+  --color-success-light: hsl(142, 72%, 45%);
+  --color-success-bg: hsl(142, 76%, 91%);     /* Green tint */
+
+  --color-warning: hsl(38, 92%, 50%);         /* Amber warning */
   --color-warning-light: hsl(38, 100%, 95%);
-  
-  --color-error: hsl(0, 84%, 60%);           /* Premium red */
-  --color-error-light: hsl(0, 84%, 97%);     /* Red tint */
-  
-  --color-info: hsl(203, 89%, 53%);          /* Premium blue */
-  --color-info-light: hsl(203, 89%, 95%);    /* Blue tint */
+
+  --color-error: hsl(0, 84%, 60%);            /* Modern red */
+  --color-error-light: hsl(0, 84%, 97%);      /* Red tint */
+
+  --color-info: hsl(200, 100%, 55%);          /* Modern cyan */
+  --color-info-light: hsl(200, 100%, 95%);    /* Cyan tint */
   
   /* ─── Surface Colors ──────────────────────────────────────────────────────── */
   --color-surface: var(--color-neutral-0);
