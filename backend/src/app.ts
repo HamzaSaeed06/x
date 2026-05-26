@@ -4,6 +4,7 @@ import pinoHttp from "pino-http";
 import cookieParser from "cookie-parser";
 import { logger } from "./lib/logger.js";
 import { connectDB } from "./lib/mongoose.js";
+import { seedDatabase } from "./seeds/seedData.js";
 
 // Route handlers
 import authRouter from "./routes/auth.js";
@@ -20,7 +21,9 @@ import notificationsRouter from "./routes/notifications.js";
 import healthRouter from "./routes/health.js";
 
 // Connect to MongoDB (non-blocking)
-connectDB().catch((err) => logger.warn({ err }, "MongoDB unavailable"));
+connectDB()
+  .then(() => seedDatabase())
+  .catch((err) => logger.warn({ err }, "MongoDB unavailable"));
 
 const app: Express = express();
 
